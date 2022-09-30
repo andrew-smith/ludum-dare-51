@@ -1,0 +1,21 @@
+{
+    "name": "ludum-dare-51",
+    "version": "1.0.0",
+    "description": "https://ldjam.com/events/ludum-dare/51",
+    "source": "src/index.html",
+    "browserslist": "> 0.5%, last 2 versions, not dead",
+    "main": "index.js",
+    "scripts": {
+        "start": "parcel",
+        "build": "parcel build"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "parcel": "^2.7.0"
+    },
+    "dependencies": {
+        "ts-keycode-enum": "^1.0.6",
+        "uuid": "^9.0.0"
+    }
+}
