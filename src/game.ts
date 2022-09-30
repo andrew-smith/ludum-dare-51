@@ -89,12 +89,12 @@ export class Game {
 
         const now = new Date().getTime();
 
-        if(this.lastUpdate === 0) {
+        if(this.lastUpdate === 0) { // first time 
             this.lastUpdate = now;
         }
 
         const delta = now - this.lastUpdate;
-        // console.log(delta);
+        // console.log(1000/delta);
 
 
         this.update(delta);

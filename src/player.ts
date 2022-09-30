@@ -87,8 +87,6 @@ export class Player extends Sprite {
     }
 
     render(g: CanvasRenderingContext2D): void {
-
-        // console.log("P Render " + this.id)
         
         g.fillStyle = "red";
 

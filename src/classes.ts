@@ -24,7 +24,6 @@ export class GameNode<ChildT extends IGameNode = IGameNode> implements IGameNode
 
     addNode(node: ChildT) {
         this.children.push(node);
-        console.log(this.children);
     }
 
     removeNode(node: ChildT) {
@@ -42,9 +41,6 @@ export class GameNode<ChildT extends IGameNode = IGameNode> implements IGameNode
                 this.removeNode(c);
             }
         });
-
-        // if any children are expired - remove them
-        this.children.forEach(c => c.updateAll(delta));
     }
 
     render(g: CanvasRenderingContext2D) {};
