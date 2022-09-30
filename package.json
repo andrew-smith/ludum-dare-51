@@ -1,6 +1,9 @@
 {
     "name": "ludum-dare-51",
     "version": "1.0.0",
+    "engines": {
+        "node" : ">=16.17.1 <17.0.0"
+    },
     "description": "https://ldjam.com/events/ludum-dare/51",
     "source": "src/index.html",
     "browserslist": "> 0.5%, last 2 versions, not dead",
