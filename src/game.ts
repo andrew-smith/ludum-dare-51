@@ -1,6 +1,8 @@
 import { Background } from "./background";
 import { GameNode } from "./classes";
 import { Player } from "./player";
+import { assert } from "./utils/assert";
+import { uuid } from "./utils/uuid";
 
 export const GAME_WIDTH = 512;
 export const GAME_HEIGHT = 640;
@@ -14,42 +16,76 @@ export type GameOpts = {
 
 export class Game {
 
-    private canvasElement;
+    id = uuid();
+
     private graphics: CanvasRenderingContext2D;
 
+    // top level root node - all rendering will happen from here
     private rootNode: GameNode;
+
+    public livePlayerNode: GameNode; // should only have one in it at all times!
+    public deadPlayerNodes: GameNode;
 
     constructor(opts: GameOpts) {
 
-        this.canvasElement = document.getElementById(opts.mainCanvasElementId);//.getContext('2d');
-        this.graphics = this.canvasElement.getContext('2d');
+        const canvasElement = document.getElementById(opts.mainCanvasElementId);//.getContext('2d');
+        assert(canvasElement instanceof HTMLCanvasElement, 'Main canvas not found!');
+        const context = canvasElement.getContext('2d');
+        assert(context, 'Canvas has no context (?)');
+        this.graphics = context;
 
         this.rootNode = new GameNode();
     }
 
 
     async initilize() {
-        console.log("initilize");
+        console.log("initilize game " + this.id);
 
         this.rootNode.addNode(new Background());
-        this.rootNode.addNode(new Player());
 
 
+        // dead player nodes
+        this.deadPlayerNodes = new GameNode();
+        this.rootNode.addNode(this.deadPlayerNodes);
+
+
+
+        // live player node
+        this.livePlayerNode = new GameNode();
+        this.rootNode.addNode(this.livePlayerNode);
+        
+        this.createNewPlayer();
+    }
+
+    // called on first load, and when a player dies and needs to respawn
+    private createNewPlayer() {
+        this.livePlayerNode.addNode(new Player());
+    }
+
+
+    playerHasDied() {
+        const livePlayer = this.livePlayerNode.children[0];
+
+        this.livePlayerNode.removeNode(livePlayer);
+        this.deadPlayerNodes.addNode(livePlayer);
+
+        this.createNewPlayer();
     }
 
 
     start() {
-        console.log("starting game");
+        console.log("starting game " + this.id);
 
         this.gameloop();
     }
+
 
 
     /** When the last update was run (milliseconds ago) */
     lastUpdate = 0;
 
     gameloop() {
-        // console.log('gameloop');
+        // console.log('gameloop ' + this.id);
 
         const now = new Date().getTime();
 
@@ -71,9 +107,7 @@ export class Game {
 
     update(delta: number) {
 
-
-        this.rootNode.update(delta);
-        this.rootNode.updateChildren(delta);
+        this.rootNode.updateAll(delta);
     }
 
 
@@ -84,8 +118,7 @@ export class Game {
 
         g.imageSmoothingEnabled = false;
 
-        this.rootNode.render(g);
-        this.rootNode.renderChildren(g);
+        this.rootNode.renderAll(g);
 
         g.restore();
     }

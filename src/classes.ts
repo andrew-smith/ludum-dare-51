@@ -1,37 +1,69 @@
-import { v4 as uuid } from 'uuid';
+import { uuid } from "./utils/uuid";
 
-export class GameNode {
+export interface IGameNode {
+    id: string;
 
-    private children: GameNode[] = [];
-    private id: string;
+    addNode(node: IGameNode): void;
+    removeNode(node: IGameNode): void;
+    update(delta: number): void;
+    updateAll(delta: number): void;
+    render(g: CanvasRenderingContext2D): void;
+    renderAll(g: CanvasRenderingContext2D): void;
+
+    hasExpired(): boolean;
+}
+
+export class GameNode<ChildT extends IGameNode = IGameNode> implements IGameNode {
+
+    children: ChildT[] = [];
+    id: string;
 
     constructor() {
         this.id = uuid();
     }
 
-    addNode(node: GameNode) {
+    addNode(node: ChildT) {
         this.children.push(node);
+        console.log(this.children);
     }
 
-    removeNode(node: GameNode) {
-        this.children = this.children.filter((n) => n.id === node.id);
+    removeNode(node: ChildT) {
+        this.children = this.children.filter((n) => n.id !== node.id);
     }
 
     update(delta: number) {};
 
-    updateChildren(delta: number) {
-        this.children.forEach(c => c.update(delta));
+    updateAll(delta: number) {
+        this.update(delta);
+        this.children.forEach(c => {
+            c.updateAll(delta);
+
+            if(c.hasExpired()) {
+                this.removeNode(c);
+            }
+        });
+
+        // if any children are expired - remove them
+        this.children.forEach(c => c.updateAll(delta));
     }
 
     render(g: CanvasRenderingContext2D) {};
 
-    renderChildren(g: CanvasRenderingContext2D) {
-        this.children.forEach(c => c.render(g));
+    renderAll(g: CanvasRenderingContext2D) {
+
+        g.save();
+
+        this.render(g);
+
+        this.children.forEach(c => c.renderAll(g));
+
+        g.restore();
+    }
+
+    hasExpired() {
+        return false;
     }
 }
-
-
-
 
 export class Sprite extends GameNode {
     x : number = 0;
