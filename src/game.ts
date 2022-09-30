@@ -1,5 +1,3 @@
-import { Key } from "ts-keycode-enum";
-import { isKeyPressed } from "./utils/keyevents";
 import { Background } from "./background";
 import { GameNode } from "./classes";
 import { Player } from "./player";
