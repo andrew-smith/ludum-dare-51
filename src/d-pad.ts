@@ -5,11 +5,13 @@ import { KEY_STATES } from './utils/keyevents';
 
 
 function wire(el: HTMLElement, keyCode: Key) {
-    el.onpointerdown = function () {
+    el.onpointerdown = function (evt) {
         KEY_STATES[keyCode] = true;
+        evt.preventDefault();
     }
-    el.onpointerup = function () {
+    el.onpointerup = function (evt) {
         KEY_STATES[keyCode] = false;
+        evt.preventDefault();
     }
 }
 
