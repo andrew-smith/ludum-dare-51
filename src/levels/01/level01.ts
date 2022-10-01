@@ -1,7 +1,7 @@
 import { Level } from "../../classes";
 import { ExitPortal } from "../../exit-portal";
 import { Game } from "../../game";
-import { GameImage } from "../../images";
+import { LazyGameImage } from "../../images";
 import { assert } from "../../utils/assert";
 
 export class Level01 extends Level {
@@ -31,11 +31,11 @@ export class Level01 extends Level {
         assert(boundsContext, 'Canvas has no context (?)');
 
         boundsContext.resetTransform(); // clear everything
-        boundsContext.drawImage(GameImage!.level01_bounds, 0,0);
+        boundsContext.drawImage(await LazyGameImage.level01_bounds(), 0,0);
         this.boundsImageData = boundsContext.getImageData(0, 0, 1000, 1000);
 
         // load background display image for user
-        this.backgroundImage = GameImage!.level01_map;
+        this.backgroundImage = await LazyGameImage.level01_map();
         
         // hardcoded exit portal
         this.exitPortal = new ExitPortal(855, 450);
