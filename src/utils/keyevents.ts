@@ -56,7 +56,7 @@ let userIsTouching = false;
 
 const currentMovement : {x: number, y: number} = {x:0, y:0};
 
-const DPAD_SQUARE_SIZE = 200;
+const DPAD_SQUARE_SIZE = 400; // make sure this is the same as in the class for touch_controls_v2
 
 function calculateUserMovement(event: TouchEvent) {
     const offsetHeight = MOBILE_CANVAS!.offsetTop;
