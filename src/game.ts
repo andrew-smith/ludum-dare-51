@@ -1,3 +1,4 @@
+import { moveToNextLevel } from "./app";
 import { Background } from "./background";
 import { GameNode, Level } from "./classes";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants";
@@ -31,6 +32,9 @@ export class Game {
 
     public player: Player;
 
+
+    /** Set to true once this game has finished and needs to be cleaned up by app.ts */
+    private DESTROY_GAME = false;
 
 
     /** True once the level is completed */
@@ -77,6 +81,13 @@ export class Game {
         this.createNewPlayer();
     }
 
+    /**
+     * Called when this game should no longer be rendered and everything can stop
+     */
+    async shutdownGame() {
+        this.DESTROY_GAME = true;
+    }
+
 
     // called on first load, and when a player dies and needs to respawn
     private createNewPlayer() {
@@ -102,7 +113,15 @@ export class Game {
     }
 
     playerWonLevel() {
+
+        if(this.isLevelCompleted) {
+            // don't run it again.
+            return;
+        }
+
         this.isLevelCompleted = true;
+
+        setTimeout(moveToNextLevel, 2000);
     }
 
 
@@ -118,6 +137,10 @@ export class Game {
     lastUpdate = 0;
 
     gameloop() {
+
+        if(this.DESTROY_GAME) {
+            return; // nothing left to do
+        }
         // console.log('gameloop ' + this.id);
 
         const now = new Date().getTime();
@@ -131,7 +154,7 @@ export class Game {
 
 
         this.update(delta);
-        this.level.update(delta);
+        this.level.update(delta, this);
         this.render(this.graphics);
 
         this.lastUpdate = now;
@@ -140,9 +163,9 @@ export class Game {
 
 
     update(delta: number) {
-
+        const self = this;
         [this.backgroundNode, this.playerNode, this.foregoundNode, this.uiNode].forEach(node => {
-            node.updateAll(delta);
+            node.updateAll(delta, self);
         });
     }
 
@@ -182,6 +205,21 @@ export class Game {
             g.restore();
 
         g.restore();
+
+
+        if(this.isLevelCompleted) {
+
+            g.save();
+
+                const FONTSIZE = 40;
+                const MSG = "LEVEL COMPLETE!";
+
+                g.fillStyle = "white";
+                g.font = `bold ${FONTSIZE}px Courier New`;
+                g.fillText(MSG, CANVAS_WIDTH/2 - (MSG.length * FONTSIZE/4), CANVAS_HEIGHT/2);
+
+            g.restore();
+        }
     }
 }
 

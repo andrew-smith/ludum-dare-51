@@ -1,7 +1,7 @@
 import { Sprite } from "../classes";
-import { GLOBAL_GAME } from "../app";
 import { Player } from "../player";
 import { CANVAS_WIDTH } from "../constants";
+import { Game } from "../game";
 
 const MAX_HEALTH_WIDTH = CANVAS_WIDTH/2;
 const HEALTH_HEIGHT = 12;
@@ -13,12 +13,18 @@ export class HealthBar extends Sprite {
         super(CANVAS_WIDTH/2, HEALTH_HEIGHT/2 + 6, {width: MAX_HEALTH_WIDTH, height: HEALTH_HEIGHT});
     }
 
+    playerHealthPercentage: number = 1;
+
+    update(delta: number, g: Game): void {
+        
+        const player = g.player;
+        this.playerHealthPercentage = (Math.abs(player.ttl / Player.PLAYER_STARTING_TTL));
+    }
+
     render(g: CanvasRenderingContext2D): void {
         
-        const player = GLOBAL_GAME.player;
-        const percentage = (Math.abs(player.ttl / Player.PLAYER_STARTING_TTL));
 
-        const healthWidth = MAX_HEALTH_WIDTH * percentage;
+        const healthWidth = MAX_HEALTH_WIDTH * this.playerHealthPercentage;
 
         // outline of health bar
         g.save();

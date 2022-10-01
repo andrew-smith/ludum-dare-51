@@ -1,4 +1,3 @@
-import { GLOBAL_GAME } from "./app";
 import { Level, Sprite } from "./classes";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants";
 import { GameImage } from "./images";

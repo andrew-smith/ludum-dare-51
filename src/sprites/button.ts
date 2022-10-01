@@ -1,5 +1,5 @@
-import { GLOBAL_GAME } from "../app";
 import { Sprite, NodeType } from "../classes";
+import { Game } from "../game";
 
 
 export class Button extends Sprite {
@@ -17,7 +17,8 @@ export class Button extends Sprite {
         this.type = NodeType.BUTTON;
     }
 
-    update(delta: number): void {
+
+    update(delta: number, g: Game): void {
 
         this.timeElapsed += delta;
 
@@ -25,7 +26,7 @@ export class Button extends Sprite {
         this.isActive = false;
 
         // check if the player has pressed the button
-        const p = GLOBAL_GAME.player;
+        const p = g.player;
 
         if(this.isPointInSprite(p)) {
             console.log("Button Pressed By Player!")
@@ -33,7 +34,7 @@ export class Button extends Sprite {
         }
 
         // check all dead bodies to see if any of them are pressing the button
-        GLOBAL_GAME.backgroundNode.children.forEach((node) => {
+        g.backgroundNode.children.forEach((node) => {
             if(node.type === NodeType.DEAD_PLAYER) {
                 if(this.isPointInSprite(node as Sprite)) {
                     this.isActive = true;

@@ -2,9 +2,10 @@ import { Level } from "../../classes";
 import { ExitPortal } from "../../exit-portal";
 import { Game } from "../../game";
 import { GameImage } from "../../images";
+import { Button } from "../../sprites/button";
 import { assert } from "../../utils/assert";
 
-export class Level01 extends Level {
+export class Level02 extends Level {
 
     width = 1000;
     height = 1000;
@@ -14,6 +15,11 @@ export class Level01 extends Level {
     constructor() {
         super();
     }
+
+
+    // the only button on this level
+    button: Button;
+
     // the only exit portal
     exitPortal: ExitPortal;
 
@@ -37,9 +43,12 @@ export class Level01 extends Level {
         // load background display image for user
         this.backgroundImage = GameImage!.level01_map;
         
+
+        this.button = new Button(700, 350);
+        game.backgroundNode.addNode(this.button);
+
         // hardcoded exit portal
         this.exitPortal = new ExitPortal(855, 450);
-
         game.backgroundNode.addNode(this.exitPortal);
     }
 
@@ -47,6 +56,6 @@ export class Level01 extends Level {
 
     update(delta: number): void {
         
-        this.exitPortal.isActive = true;
+        this.exitPortal.isActive = this.button.isActive;
     }
 }

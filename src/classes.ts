@@ -21,8 +21,8 @@ export interface IGameNode {
 
     addNode(node: IGameNode): void;
     removeNode(node: IGameNode): void;
-    update(delta: number): void;
-    updateAll(delta: number): void;
+    update(delta: number, game: Game): void;
+    updateAll(delta: number, game: Game): void;
     render(g: CanvasRenderingContext2D): void;
     renderAll(g: CanvasRenderingContext2D): void;
 
@@ -46,7 +46,7 @@ export abstract class Level {
 
     abstract initilize(game: Game): Promise<void>;
 
-    abstract update(delta: number): void;
+    abstract update(delta: number, game: Game): void;
 
     isClearSpace(x: number, y: number) : boolean {
 
@@ -80,6 +80,8 @@ export class GameNode<ChildT extends IGameNode = IGameNode> implements IGameNode
         this.id = uuid();
     }
 
+    async initilize(game: Game): Promise<void> {};
+
     addNode(node: ChildT) {
         this.children.push(node);
     }
@@ -88,12 +90,12 @@ export class GameNode<ChildT extends IGameNode = IGameNode> implements IGameNode
         this.children = this.children.filter((n) => n.id !== node.id);
     }
 
-    update(delta: number) {};
+    update(delta: number, game: Game) {};
 
-    updateAll(delta: number) {
-        this.update(delta);
+    updateAll(delta: number, g: Game) {
+        this.update(delta, g);
         this.children.forEach(c => {
-            c.updateAll(delta);
+            c.updateAll(delta, g);
 
             if(c.hasExpired()) {
                 this.removeNode(c);
@@ -178,6 +180,6 @@ export class Sprite extends GameNode {
         return false;
     }
 
-    update(delta: number) {};
+    update(delta: number, game: Game) {};
     render(g: CanvasRenderingContext2D) {};
 }

@@ -1,14 +1,9 @@
 import { loadAudio } from "./audio";
+import { Level } from "./classes";
 import { Game } from "./game";
 import { loadImages } from "./images";
 import { Level01 } from "./levels/01/level01";
-
-declare global {
-    interface Window { GLOBAL_GAME: Game }
-}
-
-export let GLOBAL_GAME: Game;
-
+import { Level02 } from "./levels/02/level02";
 
 /**
  * Called on window first load
@@ -19,21 +14,47 @@ async function startup() {
     // loading main assets
     await Promise.all([loadImages(),loadAudio()]);
 
-    GLOBAL_GAME = new Game(new Level01());
+    await moveToNextLevel();
+}
 
-    window.GLOBAL_GAME = GLOBAL_GAME; // for debugging the object
+let LEVEL_INDEX = -1;
 
-    await GLOBAL_GAME.initilize();
+const LEVELS = [
+    Level01, Level02
+]
 
-    GLOBAL_GAME.start();
+// called from game.ts when the next level should be loaded
+export async function moveToNextLevel() {
+  LEVEL_INDEX++;
+
+  if(LEVEL_INDEX >= LEVELS.length) {
+    return alert("No more levels left!");
+  }
+
+  await loadLevel(new LEVELS[LEVEL_INDEX]());
+}
+
+
+let lastLoadedGame : Game;
+
+async function loadLevel(level: Level) {
+  
+  if(lastLoadedGame) {
+    lastLoadedGame.shutdownGame();
+  }
+
+  lastLoadedGame = new Game(level);
+
+  await lastLoadedGame.initilize();
+  lastLoadedGame.start();
 }
 
 window.addEventListener('DOMContentLoaded', startup);
 
 const hot = (module as any)?.hot;
 if (hot) {
-  hot.dispose(() => {
-    window.location.reload();
-    throw "hotReload";
-  });
+    hot.dispose(() => {
+        window.location.reload();
+        throw "hotReload";
+    });
 }

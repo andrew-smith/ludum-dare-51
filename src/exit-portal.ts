@@ -1,5 +1,5 @@
-import { GLOBAL_GAME } from "./app";
 import { Sprite } from "./classes";
+import { Game } from "./game";
 
 export class ExitPortal extends Sprite {
 
@@ -15,7 +15,7 @@ export class ExitPortal extends Sprite {
 
     }
 
-    update(delta: number): void {
+    update(delta: number, g: Game): void {
 
         this.timeElapsed += delta;
 
@@ -24,12 +24,12 @@ export class ExitPortal extends Sprite {
             return;
         }
 
-        const p = GLOBAL_GAME.player;
+        const p = g.player;
 
         // if player is at the portal and it is active, then game has been won!
         if(this.isPointInSprite(p)) {
-            console.log("Exit Portal Entered!")
-            GLOBAL_GAME.playerWonLevel();
+            console.log("Exit Portal Entered!" + this.id)
+            g.playerWonLevel();
         }
     }
 

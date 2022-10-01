@@ -1,7 +1,7 @@
 import { Sprite } from "../classes";
-import { GLOBAL_GAME } from "../app";
 import { Player } from "../player";
 import { HealthBar } from "./healthbar";
+import { Game } from "../game";
 
 let DEBUG_HUD = true;
 
@@ -12,6 +12,12 @@ export class HUD extends Sprite {
         super(0,0);
 
         this.addNode(new HealthBar());
+    }
+
+    player: Player;
+
+    update(delta: number, game: Game): void {
+        this.player = game.player;    
     }
 
     render(g: CanvasRenderingContext2D): void {
@@ -33,8 +39,6 @@ export class HUD extends Sprite {
 
         g.save();
 
-        const player = GLOBAL_GAME.player;
-
         g.translate(2, 0);
 
         const TEXT_HEIGHT = -10;
@@ -44,9 +48,9 @@ export class HUD extends Sprite {
         g.fillStyle = "white";
         g.font = 'bold 10px Courier New';
         g.fillText("DEBUG INFO", 0, currentY-=TEXT_HEIGHT);
-        g.fillText("PLAYER HEALTH=" + (player.ttl / Player.PLAYER_STARTING_TTL * 100).toFixed(0) + "%", 0, currentY-=TEXT_HEIGHT);
-        g.fillText("PLAYER X=" + player.x, 0, currentY-=TEXT_HEIGHT);
-        g.fillText("PLAYER Y=" + player.y, 0, currentY-=TEXT_HEIGHT);
+        g.fillText("PLAYER HEALTH=" + (this.player.ttl / Player.PLAYER_STARTING_TTL * 100).toFixed(0) + "%", 0, currentY-=TEXT_HEIGHT);
+        g.fillText("PLAYER X=" + this.player.x, 0, currentY-=TEXT_HEIGHT);
+        g.fillText("PLAYER Y=" + this.player.y, 0, currentY-=TEXT_HEIGHT);
 
         g.restore();
     }

@@ -1,13 +1,13 @@
 import assert from "assert";
 import { Key } from "ts-keycode-enum";
 import { Explosion } from "./sprites/Explosion";
-import { GLOBAL_GAME } from "./app";
 import { GameAudio, playAudio } from "./audio";
 import { Sprite } from "./classes";
 import { CANVAS_HEIGHT, CANVAS_WIDTH, SECONDS } from "./constants";
 import { GameImage } from "./images";
 import { isKeyPressed } from "./utils/keyevents";
 import { DeadPlayer } from "./sprites/DeadPlayer";
+import { Game } from "./game";
 
 
 
@@ -47,23 +47,23 @@ export class Player extends Sprite {
     hasCelebrated = false;
 
     // called when level is finished
-    celebrateFinishingLevel() {
+    celebrateFinishingLevel(g: Game) {
         if(this.hasCelebrated) {
             return;
         }
 
         this.hasCelebrated = true;
 
-        GLOBAL_GAME.foregoundNode.addNode(new Explosion(this.x, this.y));
+        g.foregoundNode.addNode(new Explosion(this.x, this.y));
     }
 
 
 
-    update(delta: number): void {
+    update(delta: number, g: Game): void {
 
-        if(GLOBAL_GAME.isLevelCompleted) {
+        if(g.isLevelCompleted) {
 
-            this.celebrateFinishingLevel();
+            this.celebrateFinishingLevel(g);
             return;
         }
 
@@ -78,14 +78,14 @@ export class Player extends Sprite {
             this.isDead = true;
 
             // emit explosion at source
-            GLOBAL_GAME.foregoundNode.addNode(new Explosion(this.x, this.y));
+            g.foregoundNode.addNode(new Explosion(this.x, this.y));
             playAudio(GameAudio!.miniExplosion);
 
             // emit a dead player
-            GLOBAL_GAME.backgroundNode.addNode(new DeadPlayer(this.x, this.y));
+            g.backgroundNode.addNode(new DeadPlayer(this.x, this.y));
 
 
-            GLOBAL_GAME.playerHasDied();
+            g.playerHasDied();
 
         }
 
@@ -114,7 +114,7 @@ export class Player extends Sprite {
         }
 
         // if it's a bad space to move to, go back to previous position
-        if(! GLOBAL_GAME.isClearSpace(this.x, this.y)) {
+        if(! g.isClearSpace(this.x, this.y)) {
             this.x = previousX;
             this.y = previousY;
         }
