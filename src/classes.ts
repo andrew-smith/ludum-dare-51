@@ -51,7 +51,11 @@ export class GameNode<ChildT extends IGameNode = IGameNode> implements IGameNode
 
         this.render(g);
 
-        this.children.forEach(c => c.renderAll(g));
+        this.children.forEach(c => {
+            g.save();
+            c.renderAll(g)
+            g.restore();
+        });
 
         g.restore();
     }

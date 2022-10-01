@@ -57,7 +57,7 @@ export class Player extends Sprite {
             this.isDead = true;
 
             // emit explosion at source
-            GLOBAL_GAME.foregoundObjects.addNode(new Explosion(this.x, this.y));
+            GLOBAL_GAME.foregoundNode.addNode(new Explosion(this.x, this.y));
             playAudio(GameAudio!.miniExplosion);
 
             GLOBAL_GAME.playerHasDied();
@@ -86,7 +86,7 @@ export class Player extends Sprite {
             // TODO
 
             // emit smoke puff!!
-            GLOBAL_GAME.backgroundObjects.addNode(new DisappearingSmokePuff(this.x, this.y));
+            GLOBAL_GAME.backgroundNode.addNode(new DisappearingSmokePuff(this.x, this.y));
         }
     }
 
@@ -129,9 +129,9 @@ export class Player extends Sprite {
 
         const img = GameImage!.man;
 
-        // player is ALWAYS in center of the screen
+        
         g.save();
-            g.translate(CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
+            g.translate(0,0); // player is ALWAYS in center of the screen
             g.drawImage(img, -this.width/2, -this.height/2);
         g.restore();
         // g.fillRect(this.renderXPos(), this.renderYPos(), this.width, this.height);

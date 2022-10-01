@@ -29,7 +29,7 @@ export class DisappearingSmokePuff extends Sprite {
 
         // scale
         const scale = 1 - (this.ttl / DisappearingSmokePuff.STARTING_TTL); // will eventually scale up to 1
-        g.setTransform(scale, 0, 0, scale, this.x, this.y);
+        // g.setTransform(scale, 0, 0, scale, this.x, this.y);
 
         // slowly fade out the smoke
         g.globalAlpha = Math.abs(this.ttl / DisappearingSmokePuff.STARTING_TTL);

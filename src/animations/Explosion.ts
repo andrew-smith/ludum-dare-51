@@ -1,5 +1,5 @@
 import { Sprite } from "../classes";
-import { SECONDS } from "../constants";
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../constants";
 import { GameImage } from "../images";
 
 
@@ -21,7 +21,7 @@ export class Explosion extends Sprite {
     scale = 1.5;
 
     constructor(x: number, y: number) {
-        super(x, y);
+        super(x,y);
 
         console.log(this.x, this.y);
 
@@ -39,12 +39,12 @@ export class Explosion extends Sprite {
 
     render(g: CanvasRenderingContext2D): void {
 
+        g.save();
+
         // figure out what image index we should display
         const explosionIdx = Math.min(Math.floor(this.timeAlive / Explosion.FRAME_TIME_LENGTH), Explosion.TOTAL_FRAMES);
 
         g.translate(this.x, this.y);
-
-        g.setTransform(this.scale, 0, 0, this.scale, this.x, this.y);
 
         g.drawImage(GameImage!.explosion,
             explosionIdx * Explosion.FRAME_SIZE, 0,
@@ -52,6 +52,7 @@ export class Explosion extends Sprite {
             -Explosion.HALF_FRAME_SIZE, -Explosion.HALF_FRAME_SIZE,
             Explosion.FRAME_SIZE, Explosion.FRAME_SIZE);
 
+        g.restore();
     }
 
 }
