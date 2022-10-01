@@ -27,9 +27,6 @@ export class Level02 extends Level {
 
         this.game = game;
 
-        // load the background images
-        // this is already been done - but would be nice to do it here individually
-
         // load bounds data
         const boundsElement = document.getElementById("map_bounds_canvas");//.getContext('2d');
         assert(boundsElement instanceof HTMLCanvasElement, 'Main canvas not found!');
