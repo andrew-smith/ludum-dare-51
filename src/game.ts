@@ -93,7 +93,10 @@ export class Game {
         this.playerNode.removeNode(previouslyAlivePlayer);
         this.backgroundNode.addNode(previouslyAlivePlayer);
 
-        this.createNewPlayer();
+        // create a new player in a little bit, so the player can enjoy the death animationd
+        setTimeout(() => {
+            this.createNewPlayer();
+        }, 500) 
     }
 
 
