@@ -23,13 +23,13 @@ async function startup() {
 
 let LEVEL_INDEX = -1;
 
-// const LEVELS = [
-//     Level01, Level02, Level03
-// ]
-
 const LEVELS = [
-    Level05
+    Level01, Level02, Level03, Level04, Level05
 ]
+
+// const LEVELS = [
+//     Level05
+// ]
 
 // called from game.ts when the next level should be loaded
 export async function moveToNextLevel() {

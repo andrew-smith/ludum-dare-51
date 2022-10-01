@@ -1,4 +1,5 @@
 import { moveToNextLevel } from "./app";
+import { GameAudio, playAudio } from "./audio";
 import { Background } from "./background";
 import { GameNode, Level } from "./classes";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants";
@@ -120,6 +121,8 @@ export class Game {
         }
 
         this.isLevelCompleted = true;
+        playAudio(GameAudio!.enterPortal);
+
 
         setTimeout(moveToNextLevel, 2000);
     }

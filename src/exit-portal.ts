@@ -1,3 +1,4 @@
+import { GameAudio, playAudio } from "./audio";
 import { Sprite } from "./classes";
 import { Game } from "./game";
 
@@ -28,7 +29,7 @@ export class ExitPortal extends Sprite {
 
         // if player is at the portal and it is active, then game has been won!
         if(this.isPointInSprite(p)) {
-            console.log("Exit Portal Entered!" + this.id)
+            console.log("Exit Portal Entered!" + this.id);
             g.playerWonLevel();
         }
     }
