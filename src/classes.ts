@@ -37,7 +37,7 @@ export abstract class Level {
     boundsImageData: ImageData;
 
     /** The background image to display to the user */
-    backgroundImage: ImageBitmap;
+    backgroundImage?: ImageBitmap;
 
     /** Width of the level */
     width: number;
