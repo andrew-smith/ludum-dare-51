@@ -1,5 +1,6 @@
 import assert from "assert";
 import { Key } from "ts-keycode-enum";
+import { Explosion } from "./animations/Explosion";
 import { DisappearingSmokePuff } from "./animations/SmokePuff";
 import { GLOBAL_GAME } from "./app";
 import { Sprite } from "./classes";
@@ -52,9 +53,14 @@ export class Player extends Sprite {
         if(this.isDead === false && this.ttl <= 0) { //player has died (run once)
 
             console.log("Player has died");
+            this.isDead = true;
+
+            // emit explosion at source
+            GLOBAL_GAME.foregoundObjects.addNode(new Explosion(this.x, this.y));
+
+
             GLOBAL_GAME.playerHasDied();
 
-            this.isDead = true;
         }
 
 
