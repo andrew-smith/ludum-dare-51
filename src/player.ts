@@ -34,7 +34,7 @@ export class Player extends Sprite {
 
     constructor() {
         // starting x/y position
-        super(1, 1, {width: GameImage!.man.width, height: GameImage!.man.height});
+        super(500, 500, {width: GameImage!.man.width, height: GameImage!.man.height});
     }
 
 
