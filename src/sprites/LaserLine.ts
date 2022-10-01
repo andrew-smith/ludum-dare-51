@@ -126,15 +126,22 @@ export class LaserLine extends Sprite {
             g.rotate(this.angleToDrawRadians);
             g.rotate(degreesToRadians(-90));
 
+
+            // laser path
             g.strokeStyle = 'red';
             g.lineWidth = this.laserWidth;
             
-
             g.beginPath();
             g.moveTo(0,0)
             g.lineTo(0, this.lineLength);
 
             g.stroke();
+
+
+            // draw box where laser comes from
+            g.fillStyle = 'black';
+            const TSIZE = this.laserWidth * 1; // turret half size
+            g.fillRect(-TSIZE, -TSIZE, TSIZE*2, TSIZE*2);
 
         g.restore();
 
