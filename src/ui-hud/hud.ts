@@ -31,6 +31,8 @@ export class HUD extends Sprite {
             return;
         }
 
+        g.save();
+
         const player = GLOBAL_GAME.player;
 
         g.translate(2, 0);
@@ -44,6 +46,7 @@ export class HUD extends Sprite {
         g.fillText("DEBUG INFO", 0, currentY-=TEXT_HEIGHT);
         g.fillText("PLAYER HEALTH=" + (player.ttl / Player.PLAYER_STARTING_TTL * 100).toFixed(0) + "%", 0, currentY-=TEXT_HEIGHT);
 
+        g.restore();
     }
 
 
