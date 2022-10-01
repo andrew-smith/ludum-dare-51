@@ -31,7 +31,11 @@ export class Player extends Sprite {
     /** When the player is going to die (10 seconds) */
     ttl: number = Player.PLAYER_STARTING_TTL;
 
+    /** once player is dead this will be true */
     isDead = false;
+
+    /** true if the player has moved yet, starts as false and will be set to true once player does first move */
+    hasPlayerMovedYet = false;
 
     constructor() {
         // starting x/y position
@@ -47,7 +51,9 @@ export class Player extends Sprite {
 
     update(delta: number): void {
 
-        this.ttl -= delta;
+        if(this.hasPlayerMovedYet) {
+            this.ttl -= delta;
+        }
 
 
         if(this.isDead === false && this.ttl <= 0) { //player has died (run once)
@@ -92,17 +98,21 @@ export class Player extends Sprite {
 
         if(isKeyPressed(Key.UpArrow)) {
             this.y -= movementSpeed;
+            this.hasPlayerMovedYet = true;
         }
 
         if(isKeyPressed(Key.DownArrow)) {
             this.y += movementSpeed;
+            this.hasPlayerMovedYet = true;
         }
 
         if(isKeyPressed(Key.LeftArrow)) {
             this.x -= movementSpeed;
+            this.hasPlayerMovedYet = true;
         }
         if(isKeyPressed(Key.RightArrow)) {
             this.x += movementSpeed;
+            this.hasPlayerMovedYet = true;
         }
     }
 
