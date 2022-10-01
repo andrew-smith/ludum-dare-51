@@ -44,6 +44,11 @@ export class Button extends Sprite {
     }
 
 
+    setInActive() {
+        this._isActive = false;
+        playAudio(GameAudio!.buttonDepress);
+    }
+
 
     update(delta: number, g: Game): void {
 
@@ -78,6 +83,12 @@ export class Button extends Sprite {
         if(lastState === false && this._isActive === true) {
             this.setActive();
         }
+
+        // if body / player moved off the button
+        if(lastState === true && this._isActive === false) {
+            this.setInActive();
+        }
+
 
     }
 

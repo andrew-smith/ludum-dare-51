@@ -7,6 +7,7 @@ import { Level02 } from "./levels/02/level02";
 import { Level03 } from "./levels/03/level03";
 import { Level04 } from "./levels/04/level04";
 import { init as initDPad } from './d-pad';
+import { Level05 } from "./levels/05/level05";
 
 /**
  * Called on window first load
@@ -27,7 +28,7 @@ let LEVEL_INDEX = -1;
 // ]
 
 const LEVELS = [
-    Level04
+    Level05
 ]
 
 // called from game.ts when the next level should be loaded
