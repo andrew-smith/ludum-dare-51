@@ -27,8 +27,7 @@ export class ExitPortal extends Sprite {
         const p = GLOBAL_GAME.player;
 
         // if player is at the portal and it is active, then game has been won!
-
-        if(Math.abs(p.x - this.x) < this.width/2 && Math.abs(p.y - this.y) < this.height/2) {
+        if(this.isPointInSprite(p)) {
             console.log("Exit Portal Entered!")
             GLOBAL_GAME.playerWonLevel();
         }
@@ -36,17 +35,17 @@ export class ExitPortal extends Sprite {
 
     render(g: CanvasRenderingContext2D): void {
 
+        g.translate(this.x, this.y);
 
         g.fillStyle = 'grey';
 
         if(this.isActive) {
             g.fillStyle = 'purple';
+            g.rotate(this.timeElapsed / 300);
+            g.scale(Math.sin(this.timeElapsed / 300), 1);
         }
 
-        g.translate(this.x, this.y);
 
-        g.rotate(this.timeElapsed / 300);
-        g.scale(Math.sin(this.timeElapsed / 300), 1);
 
         g.fillRect(-this.width/2, -this.height/2, this.width, this.height);
 

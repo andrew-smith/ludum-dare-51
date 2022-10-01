@@ -104,7 +104,18 @@ export class Sprite extends GameNode {
         return this.y - this.height/2; 
     }
 
-    
+    /**
+     * Check if a sprite x/y is within THIS sprite
+     */
+    isPointInSprite(otherSprite: Sprite) : boolean {
+
+        if(Math.abs(otherSprite.x - this.x) < this.width/2 && Math.abs(otherSprite.y - this.y) < this.height/2) {
+            return true;
+        }
+
+        return false;
+    }
+
     update(delta: number) {};
     render(g: CanvasRenderingContext2D) {};
 }
