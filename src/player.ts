@@ -97,21 +97,21 @@ export class Player extends Sprite {
 
         const movementSpeed = 0.35 * delta;
 
-        if(isKeyPressed(Key.UpArrow)) {
+        if(isKeyPressed(Key.UpArrow) || isKeyPressed(Key.W)) {
             this.y -= movementSpeed;
             this.hasPlayerMovedYet = true;
         }
 
-        if(isKeyPressed(Key.DownArrow)) {
+        if(isKeyPressed(Key.DownArrow)  || isKeyPressed(Key.S)) {
             this.y += movementSpeed;
             this.hasPlayerMovedYet = true;
         }
 
-        if(isKeyPressed(Key.LeftArrow)) {
+        if(isKeyPressed(Key.LeftArrow) || isKeyPressed(Key.A)) {
             this.x -= movementSpeed;
             this.hasPlayerMovedYet = true;
         }
-        if(isKeyPressed(Key.RightArrow)) {
+        if(isKeyPressed(Key.RightArrow) || isKeyPressed(Key.D)) {
             this.x += movementSpeed;
             this.hasPlayerMovedYet = true;
         }
