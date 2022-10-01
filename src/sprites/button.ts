@@ -1,5 +1,5 @@
 import { GLOBAL_GAME } from "../app";
-import { Sprite } from "../classes";
+import { Sprite, NodeType } from "../classes";
 
 
 export class Button extends Sprite {
@@ -14,6 +14,7 @@ export class Button extends Sprite {
     constructor(x: number, y: number) {
         super(x,y, {width:35, height:15});
 
+        this.type = NodeType.BUTTON;
     }
 
     update(delta: number): void {
@@ -32,6 +33,13 @@ export class Button extends Sprite {
         }
 
         // check all dead bodies to see if any of them are pressing the button
+        GLOBAL_GAME.backgroundNode.children.forEach((node) => {
+            if(node.type === NodeType.DEAD_PLAYER) {
+                if(this.isPointInSprite(node as Sprite)) {
+                    this.isActive = true;
+                }
+            }
+        })
 
 
         GLOBAL_GAME.testExitPortal.isActive = this.isActive;

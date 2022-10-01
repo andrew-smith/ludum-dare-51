@@ -123,19 +123,8 @@ export class Player extends Sprite {
 
     render(g: CanvasRenderingContext2D): void {
 
-        if(this.isDead) {
-            return this.renderDeadPlayer(g);
-        }
-
-        this.renderAlivePlayer(g);
-    }
-
-
-    renderAlivePlayer(g: CanvasRenderingContext2D): void {
-
         const img = GameImage!.man;
 
-        
         g.save();
             g.translate(0,0); // player is ALWAYS in center of the screen
             g.drawImage(img, -this.width/2, -this.height/2);

@@ -1,4 +1,4 @@
-import { Sprite } from "../classes";
+import { Sprite, NodeType } from "../classes";
 import { GameImage } from "../images";
 
 
@@ -7,6 +7,7 @@ export class DeadPlayer extends Sprite {
     constructor(x: number, y: number) {
         super(x,y, {width: GameImage!.man.width, height: GameImage!.man.height});
 
+        this.type = NodeType.DEAD_PLAYER;
     }
 
     update(delta: number): void {

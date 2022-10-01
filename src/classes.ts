@@ -1,7 +1,22 @@
 import { uuid } from "./utils/uuid";
 
+
+
+export enum NodeType {
+
+    GENERAL_NODE,
+    GENERAL_SPRITE,
+
+    BUTTON,
+    EXIT_PORTAL,
+    DEAD_PLAYER
+}
+
+
 export interface IGameNode {
     id: string;
+
+    type: NodeType;
 
     addNode(node: IGameNode): void;
     removeNode(node: IGameNode): void;
@@ -17,6 +32,8 @@ export class GameNode<ChildT extends IGameNode = IGameNode> implements IGameNode
 
     children: ChildT[] = [];
     id: string;
+
+    type = NodeType.GENERAL_NODE;
 
     constructor() {
         this.id = uuid();
@@ -65,6 +82,7 @@ export class GameNode<ChildT extends IGameNode = IGameNode> implements IGameNode
     }
 }
 
+
 export type SpriteOpts = {
     width?: number;
     height?: number;
@@ -80,6 +98,9 @@ export class Sprite extends GameNode {
 
     width : number = 0;
     height: number = 0;
+
+    /** great for filtering what type of node this is */
+    type: NodeType = NodeType.GENERAL_SPRITE;
 
     constructor(x: number, y: number, opts?: SpriteOpts) {
         super();
