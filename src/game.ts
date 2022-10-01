@@ -9,6 +9,7 @@ import { assert } from "./utils/assert";
 import { uuid } from "./utils/uuid";
 import { GameImage } from "./images";
 import { ExitPortal } from "./exit-portal";
+import { Button } from "./sprites/button";
 
 
 
@@ -95,12 +96,20 @@ export class Game {
 
 
         // hardcoded exit portal
-        const exitPortal = new ExitPortal(855, 450);
-        exitPortal.isActive = true;
-        this.backgroundNode.addNode(exitPortal);
+        this.testExitPortal = new ExitPortal(855, 450);
+        // exitPortal.isActive = true;
+        this.backgroundNode.addNode(this.testExitPortal);
+
+        // hardcoded button
+        const button = new Button(700, 350);
+        this.backgroundNode.addNode(button);
+
         
         this.createNewPlayer();
     }
+
+
+    testExitPortal: ExitPortal;
 
     // called on first load, and when a player dies and needs to respawn
     private createNewPlayer() {
