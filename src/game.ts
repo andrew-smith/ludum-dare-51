@@ -1,3 +1,4 @@
+import { loadAudio } from "./audio";
 import { Background } from "./background";
 import { GameNode } from "./classes";
 import { loadImages } from "./images";
@@ -46,7 +47,10 @@ export class Game {
     async initilize() {
         console.log("initilize game " + this.id);
 
-        const loadImagesPromise = loadImages();
+        const loadPromises = Promise.all([
+            loadImages(),
+            loadAudio(),
+        ]);
 
         // THIS IS IN RENDERING ORDER
 
@@ -78,8 +82,8 @@ export class Game {
 
 
         // wait for all async
-        await loadImagesPromise;
-        console.log("All images loaded");
+        await loadPromises;
+        console.log("All resources loaded");
         
         this.createNewPlayer();
     }

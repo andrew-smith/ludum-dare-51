@@ -9,7 +9,8 @@
     "browserslist": "> 0.5%, last 2 versions, not dead",
     "scripts": {
         "start": "parcel",
-        "build": "parcel build"
+        "build": "parcel build",
+        "dev": "parcel src/index.html"
     },
     "author": "",
     "license": "ISC",

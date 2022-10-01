@@ -3,6 +3,7 @@ import { Key } from "ts-keycode-enum";
 import { Explosion } from "./animations/Explosion";
 import { DisappearingSmokePuff } from "./animations/SmokePuff";
 import { GLOBAL_GAME } from "./app";
+import { GameAudio, playAudio } from "./audio";
 import { Sprite } from "./classes";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants";
 import { GameImage } from "./images";
@@ -63,7 +64,7 @@ export class Player extends Sprite {
 
             // emit explosion at source
             GLOBAL_GAME.foregoundObjects.addNode(new Explosion(this.x, this.y));
-
+            playAudio(GameAudio!.miniExplosion);
 
             GLOBAL_GAME.playerHasDied();
 
