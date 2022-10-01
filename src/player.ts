@@ -1,8 +1,10 @@
+import assert from "assert";
 import { Key } from "ts-keycode-enum";
 import { DisappearingSmokePuff } from "./animations/SmokePuff";
 import { GLOBAL_GAME } from "./app";
 import { Sprite } from "./classes";
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./game";
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants";
+import { GameImage } from "./images";
 import { isKeyPressed } from "./utils/keyevents";
 
 const SECOND = 1000;
@@ -32,7 +34,7 @@ export class Player extends Sprite {
 
     constructor() {
         // starting x/y position
-        super(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, {width: 10, height: 18});
+        super(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, {width: GameImage!.man.width, height: GameImage!.man.height});
     }
 
 
@@ -99,6 +101,9 @@ export class Player extends Sprite {
     }
 
     render(g: CanvasRenderingContext2D): void {
+
+        const img = GameImage!.man;
+        
         
         g.fillStyle = "red";
 
@@ -109,8 +114,8 @@ export class Player extends Sprite {
             g.globalAlpha = 1- Math.abs(this.ttl / Player.PLAYER_EXPIRE_TTL);
         }
 
-        g.translate(this.renderXPos(), this.renderYPos());
+        g.drawImage(img, this.renderXPos(), this.renderYPos());
 
-        g.fillRect(0, 0, this.width, this.height);
+        // g.fillRect(this.renderXPos(), this.renderYPos(), this.width, this.height);
     }
 }

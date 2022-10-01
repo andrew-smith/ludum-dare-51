@@ -1,12 +1,10 @@
 import { Background } from "./background";
 import { GameNode } from "./classes";
+import { loadImages } from "./images";
 import { Player } from "./player";
 import { HUD } from "./ui-hud/hud";
 import { assert } from "./utils/assert";
 import { uuid } from "./utils/uuid";
-
-export const CANVAS_WIDTH = 512;
-export const CANVAS_HEIGHT = 640;
 
 
 
@@ -48,6 +46,8 @@ export class Game {
     async initilize() {
         console.log("initilize game " + this.id);
 
+        const loadImagesPromise = loadImages();
+
         // THIS IS IN RENDERING ORDER
 
         this.background = new Background();
@@ -75,6 +75,11 @@ export class Game {
         this.rootNode.addNode(this.uiNode);
 
         this.uiNode.addNode(new HUD());
+
+
+        // wait for all async
+        await loadImagesPromise;
+        console.log("All images loaded");
         
         this.createNewPlayer();
     }

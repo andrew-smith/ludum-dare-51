@@ -1,6 +1,5 @@
 import { Sprite } from "../classes";
 import { SECONDS } from "../constants";
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../game";
 
 
 export class DisappearingSmokePuff extends Sprite {

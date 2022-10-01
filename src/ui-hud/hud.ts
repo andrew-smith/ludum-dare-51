@@ -1,7 +1,7 @@
 import { Sprite } from "../classes";
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../game";
 import { GLOBAL_GAME } from "../app";
 import { Player } from "../player";
+import { HealthBar } from "./healthbar";
 
 let DEBUG_HUD = true;
 
@@ -10,13 +10,18 @@ export class HUD extends Sprite {
 
     constructor() {
         super(0,0);
+
+        this.addNode(new HealthBar());
     }
 
     render(g: CanvasRenderingContext2D): void {
         
+        g.save();
 
 
         this.debugRender(g);
+
+        g.restore();
     }
 
 

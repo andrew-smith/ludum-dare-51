@@ -15,7 +15,8 @@
     "license": "ISC",
     "devDependencies": {
         "@types/node": "^18.7.23",
-        "parcel": "^2.7.0"
+        "parcel": "^2.7.0",
+        "sharp": "^0.29.3"
     },
     "dependencies": {
         "@swc/helpers": "^0.4.11",
