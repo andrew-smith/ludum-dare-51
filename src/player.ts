@@ -21,7 +21,7 @@ export class Player extends Sprite {
     static PLAYER_EXPIRE_TTL = 10 * SECONDS;
 
     /** How much time the player starts with */
-    static PLAYER_STARTING_TTL = 3 * SECONDS;
+    static PLAYER_STARTING_TTL = 10 * SECONDS;
 
     /** When the player is going to die (10 seconds) */
     ttl: number = Player.PLAYER_STARTING_TTL;
@@ -34,7 +34,7 @@ export class Player extends Sprite {
 
     constructor() {
         // starting x/y position
-        super(0, 0, {width: GameImage!.man.width, height: GameImage!.man.height});
+        super(1, 1, {width: GameImage!.man.width, height: GameImage!.man.height});
     }
 
 
@@ -92,6 +92,9 @@ export class Player extends Sprite {
 
     updateLivePlayer(delta: number) {
 
+        const previousX = this.x;
+        const previousY = this.y;
+
         const movementSpeed = 0.35 * delta;
 
         if(isKeyPressed(Key.UpArrow) || isKeyPressed(Key.W)) {
@@ -111,6 +114,12 @@ export class Player extends Sprite {
         if(isKeyPressed(Key.RightArrow) || isKeyPressed(Key.D)) {
             this.x += movementSpeed;
             this.hasPlayerMovedYet = true;
+        }
+
+        // if it's a bad space to move to, go back to previous position
+        if(! GLOBAL_GAME.isClearSpace(this.x, this.y)) {
+            this.x = previousX;
+            this.y = previousY;
         }
 
     }

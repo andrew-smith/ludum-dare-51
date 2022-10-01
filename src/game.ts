@@ -7,6 +7,7 @@ import { Player } from "./player";
 import { HUD } from "./ui-hud/hud";
 import { assert } from "./utils/assert";
 import { uuid } from "./utils/uuid";
+import { GameImage } from "./images";
 
 
 
@@ -32,6 +33,8 @@ export class Game {
 
 
     public player: Player;
+
+    private boundsImageData;
 
 
     constructor(opts: GameOpts) {
@@ -70,12 +73,21 @@ export class Game {
 
         // FINISH RENDERING ORDER SETUP
 
-
-
-
         // wait for all async
         await loadPromises;
         console.log("All resources loaded");
+
+        // setup bounds
+        const boundsElement = document.getElementById("map_bounds_canvas");//.getContext('2d');
+        assert(boundsElement instanceof HTMLCanvasElement, 'Main canvas not found!');
+        const boundsContext = boundsElement.getContext('2d');
+        assert(boundsContext, 'Canvas has no context (?)');
+
+        boundsContext.resetTransform(); // clear everything
+        boundsContext.drawImage(GameImage!.level01_bounds, 0,0);
+        this.boundsImageData = boundsContext.getImageData(0, 0, 1000, 1000);
+        console.log(this.boundsImageData);
+
         
         this.createNewPlayer();
     }
@@ -86,6 +98,25 @@ export class Game {
         this.playerNode.addNode(this.player);
     }
 
+
+    isClearSpace(x: number, y: number) : boolean {
+
+        x = Math.floor(x);
+        y = Math.floor(y);
+
+        if(x < 0 || x >= 1000 || y < 0 || y >= 1000) {
+            return false;
+        }
+
+        const index = y * (1000 * 4) + x * 4;
+
+        if(index < 0 || index >= this.boundsImageData.length) {
+            return false;
+        }
+
+        return this.boundsImageData.data[index] > 0;
+
+    }
 
     playerHasDied() {
         const previouslyAlivePlayer = this.playerNode.children[0];

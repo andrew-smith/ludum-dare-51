@@ -41,10 +41,13 @@ export class HUD extends Sprite {
 
         let currentY = 0
 
-        g.fillStyle = "black";
+        g.fillStyle = "white";
         g.font = 'bold 10px Courier New';
         g.fillText("DEBUG INFO", 0, currentY-=TEXT_HEIGHT);
         g.fillText("PLAYER HEALTH=" + (player.ttl / Player.PLAYER_STARTING_TTL * 100).toFixed(0) + "%", 0, currentY-=TEXT_HEIGHT);
+        g.fillText("PLAYER X=" + player.x, 0, currentY-=TEXT_HEIGHT);
+        g.fillText("PLAYER Y=" + player.y, 0, currentY-=TEXT_HEIGHT);
+        g.fillText("BOUNDS_VALUE=" + GLOBAL_GAME.isClearSpace(player.x, player.y), 0, currentY-=TEXT_HEIGHT);
 
         g.restore();
     }
