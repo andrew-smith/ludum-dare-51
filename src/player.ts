@@ -9,6 +9,8 @@ import { isKeyPressed } from "./utils/keyevents";
 import { DeadPlayer } from "./sprites/DeadPlayer";
 import { Game } from "./game";
 
+import Flatten from '@flatten-js/core'
+const { Polygon, Point, Line } = Flatten;
 
 
 /**
@@ -32,9 +34,18 @@ export class Player extends Sprite {
     /** true if the player has moved yet, starts as false and will be set to true once player does first move */
     hasPlayerMovedYet = false;
 
+
+    /** The last position of the player */
+    previousX: number;
+    /** The last position of the player */
+    previousY: number;
+
     constructor() {
         // starting x/y position
         super(500, 500, {width: GameImage!.man.width, height: GameImage!.man.height});
+
+        this.previousX = this.x;
+        this.previousY = this.y;
     }
 
 
@@ -58,6 +69,19 @@ export class Player extends Sprite {
     }
 
 
+    /** Get the current position and bounding box of the player */
+    getPlayerBoundingBox() : Flatten.Polygon {
+
+        const bbWidth = this.width/4;
+        const bbHeight = this.height/4;
+
+        return new Polygon([
+            new Point(this.x - bbWidth, this.y - bbHeight),
+            new Point(this.x - bbWidth, this.y + bbHeight),
+            new Point(this.x + bbWidth, this.y + bbHeight),
+            new Point(this.x + bbWidth, this.y - bbHeight),
+        ]);
+    }
 
     update(delta: number, g: Game): void {
 
@@ -120,11 +144,23 @@ export class Player extends Sprite {
         }
 
 
+        // persist this on the object
+        this.previousX = previousX;
+        this.previousY = previousY;
+
         // if space is pressed - die instantly
         if(isKeyPressed(Key.Space)) {
-            this.ttl = -1;
+            this.kill();
         }
 
+    }
+
+
+    /**
+     * Force the player to instantly die
+     */
+    kill() {
+        this.ttl = -1;
     }
 
     render(g: CanvasRenderingContext2D): void {
