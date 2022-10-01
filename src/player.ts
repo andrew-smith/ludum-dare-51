@@ -72,6 +72,8 @@ export class Player extends Sprite {
     /** Get the current position and bounding box of the player */
     getPlayerBoundingBox() : Flatten.Polygon {
 
+        // TODO This is also in the DeadPlayer.ts file. Copy this over
+
         const bbWidth = this.width/4;
         const bbHeight = this.height/4;
 

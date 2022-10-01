@@ -2,6 +2,7 @@ import { Sprite, NodeType } from "../classes";
 import { Game } from "../game";
 import { degreesToRadians, findNewPoint, radiansToDegrees } from "../utils/math";
 import Flatten from '@flatten-js/core'
+import { DeadPlayer } from "./DeadPlayer";
 const { Polygon, Point, Line } = Flatten;
 
 export class LaserLine extends Sprite {
@@ -18,6 +19,8 @@ export class LaserLine extends Sprite {
     // (this is so we can texture it)
     private angleToDrawRadians: number;
     private lineLength: number;
+    // the starting length - in case the length changes (like if a dead body is in the way)
+    private originalLength: number;
 
     private polygon: Flatten.Polygon;
     boundPoints : {x:number, y:number}[] = [];
@@ -35,12 +38,13 @@ export class LaserLine extends Sprite {
         
         this.angleToDrawRadians = (Math.atan2( y2 - y1, x2 - x1 ));
         this.lineLength = Math.abs(Math.hypot(x2-x1, y2-y1));
+        this.originalLength = this.lineLength;
 
-        this.calculateBounds();
+        this.computeBounds();
     }
 
     // should only be called once - or if the bounds change
-    calculateBounds() {
+    computeBounds() {
 
 
         // calculate bounds
@@ -65,23 +69,48 @@ export class LaserLine extends Sprite {
 
     update(delta: number, g: Game): void {
 
-
         const p = g.player;
 
-        const p1 = new Point(p.x, p.y);
-        const p2 = new Point(p.previousX, p.previousY);
-
-        if(p1.x === p2.x && p1.y === p2.y) {
-            // this means the player has not moved - so don't calculate any collisions
-            return;
-        }
-
-        // const playerMovementLine = new Line(p1, p2);
-
+        // check if the player gets hit by the laser
         if(this.polygon.intersect(p.getPlayerBoundingBox()).length > 0) {
-            console.log('LASER HIT');
-            g.player.kill();
+
+            // AND make sure that there isn't a body in front of the laser
+
+
+            // get the length from the start to the player
+            const lengthToPlayer = Math.abs(Math.hypot(p.x-this.x1, p.y-this.y1));
+
+            if(lengthToPlayer < this.lineLength) { // then it's hit!
+
+                console.log('LASER HIT');
+                g.player.kill();
+            }
+
         }
+
+        // check all dead bodies to see if any of them are in the way of the laser
+        const allIntersectingPoints: Flatten.Point[] = [];
+
+        g.backgroundNode.children.forEach((node) => {
+            if(node.type === NodeType.DEAD_PLAYER) {
+                const deadBody = node as DeadPlayer;
+
+                allIntersectingPoints.push(... this.polygon.intersect(deadBody.getPlayerBoundingBox()));
+                
+            }
+        });
+
+        // get all intersecting points and figure out the shortest distance
+        allIntersectingPoints.forEach((point) => {
+            const shortLineLength = Math.abs(Math.hypot(point.x-this.x1, point.y-this.y1));
+
+            if(this.lineLength > shortLineLength) {
+                this.lineLength = shortLineLength;
+            }
+        })
+
+
+
     }
 
     render(g: CanvasRenderingContext2D): void {
