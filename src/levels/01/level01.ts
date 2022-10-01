@@ -4,6 +4,8 @@ import { assert } from "../../utils/assert";
 
 export class Level01 extends Level {
 
+    width = 1000;
+    height = 1000;
 
     constructor() {
         super();
@@ -24,6 +26,9 @@ export class Level01 extends Level {
         boundsContext.resetTransform(); // clear everything
         boundsContext.drawImage(GameImage!.level01_bounds, 0,0);
         this.boundsImageData = boundsContext.getImageData(0, 0, 1000, 1000);
+
+        // load background display image for user
+        this.backgroundImage = GameImage!.level01_map;
         
     }
 

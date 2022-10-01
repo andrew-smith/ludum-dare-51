@@ -66,7 +66,7 @@ export class Game {
         // THIS IS IN RENDERING ORDER
 
         // first render all background objects
-        this.backgroundNode = new Background();
+        this.backgroundNode = new Background(this.level);
 
         // then render the player
         this.playerNode = new GameNode();

@@ -35,6 +35,14 @@ export abstract class Level {
     /** Stores black/white image data so we can look up if there is a collision for the player. */
     boundsImageData: ImageData;
 
+    /** The background image to display to the user */
+    backgroundImage: ImageBitmap;
+
+    /** Width of the level */
+    width: number;
+    /** height of the level */
+    height: number;
+
     abstract initilize(): Promise<void>;
 
     isClearSpace(x: number, y: number) : boolean {

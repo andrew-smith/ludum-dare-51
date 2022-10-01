@@ -1,7 +1,7 @@
 import { loadAudio } from "./audio";
 import { Game } from "./game";
 import { loadImages } from "./images";
-import { Level01 } from "./levels/01/level";
+import { Level01 } from "./levels/01/level01";
 
 declare global {
     interface Window { GLOBAL_GAME: Game }

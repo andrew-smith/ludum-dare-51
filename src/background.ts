@@ -1,5 +1,5 @@
 import { GLOBAL_GAME } from "./app";
-import { Sprite } from "./classes";
+import { Level, Sprite } from "./classes";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants";
 import { GameImage } from "./images";
 
@@ -7,8 +7,8 @@ import { GameImage } from "./images";
 
 export class Background extends Sprite {
 
-    constructor() {
-        super(0, 0, {width:1000, height:1000});
+    constructor(level: Level) {
+        super(0, 0, {width:level.width, height:level.height});
     }
 
 
