@@ -2,9 +2,12 @@ import { Sprite, NodeType } from "../classes";
 import { GameImage } from "../images";
 
 import Flatten from '@flatten-js/core'
+import { SECONDS } from "../constants";
 const { Polygon, Point, Line } = Flatten;
 
 export class DeadPlayer extends Sprite {
+
+    ttl: number = 7 * SECONDS;
 
     constructor(x: number, y: number) {
         super(x,y, {width: GameImage!.man.width, height: GameImage!.man.height});
@@ -12,7 +15,12 @@ export class DeadPlayer extends Sprite {
         this.type = NodeType.DEAD_PLAYER;
     }
 
+    hasExpired(): boolean {
+        return this.ttl < 0;
+    }
+
     update(delta: number): void {
+        this.ttl -= delta;
     }
 
     /** Get the current position and bounding box of the player */
