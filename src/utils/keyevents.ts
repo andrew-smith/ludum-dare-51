@@ -33,3 +33,6 @@ export function isKeyPressed(key: Key) {
     return KEY_STATES[key] == true;
 }
 
+export function isTouchDevice() {
+    return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+}

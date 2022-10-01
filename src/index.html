@@ -3,6 +3,9 @@
 
 <head>
     <title>Ludum Dare 51</title>
+
+    <meta name="viewport" content="width=512, initial-scale=1" />
+
     <style>
         .display {
             padding: 0;
@@ -22,10 +25,12 @@
 
     <div class="display" style="width: 512px; ">
 
-        <canvas id="main_canvas" width="512" height="640" style="border:5px solid #000000;">
+        <canvas id="main_canvas" width="512" height="640" style="border:5px solid #616161;">
         </canvas>
-        <canvas id="secondary_canvas" width="512" height="50" style="border:5px solid #000000;">
+        <canvas id="secondary_canvas" width="512" height="50" style="border:5px solid #616161;">
         </canvas>
+
+        <div id="touch_controls" style="display: none;"></div>
     </div>
 
     <script type="module" src="app.ts"></script>
