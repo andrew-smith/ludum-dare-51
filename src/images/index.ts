@@ -29,3 +29,9 @@ export async function loadImages() {
 
 }
 
+// TODO
+export async function loadImage(path: string) {
+    // TODO can we load individual images through here.
+    // I'd like to call this when every level is loaded
+    // like so: loadImage('levels/01/bounds.png?width=1000&height=1000')
+}

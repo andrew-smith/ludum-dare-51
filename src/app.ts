@@ -1,4 +1,7 @@
+import { loadAudio } from "./audio";
 import { Game } from "./game";
+import { loadImages } from "./images";
+import { Level01 } from "./levels/01/level";
 
 declare global {
     interface Window { GLOBAL_GAME: Game }
@@ -13,7 +16,10 @@ export let GLOBAL_GAME: Game;
 async function startup() {
     console.log("Window Loaded");
 
-    GLOBAL_GAME = new Game({mainCanvasElementId: 'main_canvas'});
+    // loading main assets
+    await Promise.all([loadImages(),loadAudio()]);
+
+    GLOBAL_GAME = new Game(new Level01());
 
     window.GLOBAL_GAME = GLOBAL_GAME; // for debugging the object
 

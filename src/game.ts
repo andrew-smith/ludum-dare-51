@@ -1,6 +1,6 @@
 import { loadAudio } from "./audio";
 import { Background } from "./background";
-import { GameNode } from "./classes";
+import { GameNode, Level } from "./classes";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants";
 import { loadImages } from "./images";
 import { Player } from "./player";
@@ -14,7 +14,7 @@ import { Button } from "./sprites/button";
 
 
 export type GameOpts = {
-    mainCanvasElementId: string,
+
 }
 
 
@@ -36,23 +36,23 @@ export class Game {
 
     public player: Player;
 
-    /** Stores black/white image data so we can look up if there is a collision for the player */
-    private boundsImageData: ImageData;
 
 
     /** True once the level is completed */
     isLevelCompleted = false;
 
 
-    constructor(opts: GameOpts) {
+    level: Level;
 
-        const canvasElement = document.getElementById(opts.mainCanvasElementId);//.getContext('2d');
+    constructor(level: Level, opts?: GameOpts) {
+
+        const canvasElement = document.getElementById("main_canvas");//.getContext('2d');
         assert(canvasElement instanceof HTMLCanvasElement, 'Main canvas not found!');
         const context = canvasElement.getContext('2d');
         assert(context, 'Canvas has no context (?)');
         this.graphics = context;
 
-        // this.rootNode = new GameNode();
+        this.level = level;
     }
 
 
@@ -60,8 +60,7 @@ export class Game {
         console.log("initilize game " + this.id);
 
         const loadPromises = Promise.all([
-            loadImages(),
-            loadAudio(),
+            this.level.initilize()
         ]);
 
         // THIS IS IN RENDERING ORDER
@@ -84,15 +83,6 @@ export class Game {
         await loadPromises;
         console.log("All resources loaded");
 
-        // setup bounds
-        const boundsElement = document.getElementById("map_bounds_canvas");//.getContext('2d');
-        assert(boundsElement instanceof HTMLCanvasElement, 'Main canvas not found!');
-        const boundsContext = boundsElement.getContext('2d');
-        assert(boundsContext, 'Canvas has no context (?)');
-
-        boundsContext.resetTransform(); // clear everything
-        boundsContext.drawImage(GameImage!.level01_bounds, 0,0);
-        this.boundsImageData = boundsContext.getImageData(0, 0, 1000, 1000);
 
 
         // hardcoded exit portal
@@ -117,25 +107,10 @@ export class Game {
         this.playerNode.addNode(this.player);
     }
 
-
     isClearSpace(x: number, y: number) : boolean {
-
-        x = Math.floor(x);
-        y = Math.floor(y);
-
-        if(x < 0 || x >= 1000 || y < 0 || y >= 1000) {
-            return false;
-        }
-
-        const index = y * (1000 * 4) + x * 4;
-
-        if(index < 0 || index >= this.boundsImageData.data.length) {
-            return false;
-        }
-
-        return this.boundsImageData.data[index] > 0;
-
+        return this.level.isClearSpace(x, y);
     }
+    
 
     playerHasDied() {
         const previouslyAlivePlayer = this.playerNode.children[0];

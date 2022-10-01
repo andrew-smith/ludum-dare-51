@@ -28,6 +28,36 @@ export interface IGameNode {
     hasExpired(): boolean;
 }
 
+
+
+export abstract class Level {
+
+    /** Stores black/white image data so we can look up if there is a collision for the player. */
+    boundsImageData: ImageData;
+
+    abstract initilize(): Promise<void>;
+
+    isClearSpace(x: number, y: number) : boolean {
+
+        x = Math.floor(x);
+        y = Math.floor(y);
+
+        if(x < 0 || x >= 1000 || y < 0 || y >= 1000) {
+            return false;
+        }
+
+        const index = y * (1000 * 4) + x * 4;
+
+        if(index < 0 || index >= this.boundsImageData.data.length) {
+            return false;
+        }
+
+        return this.boundsImageData.data[index] > 0;
+
+    }
+
+}
+
 export class GameNode<ChildT extends IGameNode = IGameNode> implements IGameNode {
 
     children: ChildT[] = [];
