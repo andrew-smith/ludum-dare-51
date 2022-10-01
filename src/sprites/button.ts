@@ -1,3 +1,4 @@
+import { GameAudio, playAudio } from "../audio";
 import { Sprite, NodeType } from "../classes";
 import { Game } from "../game";
 
@@ -6,7 +7,7 @@ export class Button extends Sprite {
 
 
     /** true if the button is currently being pressed */
-    isActive = false;
+    private isActive = false;
 
     /** delta is added to this */
     timeElapsed = 0;
@@ -23,6 +24,7 @@ export class Button extends Sprite {
         this.timeElapsed += delta;
 
         // reset is active and check again
+        const lastState = this.isActive;
         this.isActive = false;
 
         // check if the player has pressed the button
@@ -41,6 +43,11 @@ export class Button extends Sprite {
                 }
             }
         })
+
+        // if the button was pressed - play a sound!
+        if(lastState === false && this.isActive === true) {
+            playAudio(GameAudio!.buttonPress);
+        }
 
     }
 

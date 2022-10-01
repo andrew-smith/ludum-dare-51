@@ -1,6 +1,7 @@
 
 const AUDIO = {
     miniExplosion: new URL('mini-explosion.mp3', import.meta.url),
+    buttonPress: new URL('button_press.wav', import.meta.url),
 } as const;
 type Audio = { [name in keyof typeof AUDIO]: ArrayBuffer };
 
