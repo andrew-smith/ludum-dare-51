@@ -1,4 +1,5 @@
 import { Key } from "ts-keycode-enum";
+import { DisappearingSmokePuff } from "./animations/SmokePuff";
 import { GLOBAL_GAME } from "./app";
 import { Sprite } from "./classes";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./game";
@@ -18,7 +19,7 @@ export class Player extends Sprite {
 
     
     /** Player node is expired (removed) after 30 seconds */
-    static PLAYER_EXPIRE_TTL = -30 * SECOND; 
+    static PLAYER_EXPIRE_TTL = -3 * SECOND; 
 
     /** How much time the player starts with */
     static PLAYER_STARTING_TTL = 3 * SECOND;
@@ -31,7 +32,7 @@ export class Player extends Sprite {
 
     constructor() {
         // starting x/y position
-        super(CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
+        super(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, {width: 10, height: 18});
     }
 
 
@@ -69,6 +70,12 @@ export class Player extends Sprite {
     updateDeadPlayer(delta: number) {
 
         // todo something?
+
+        if(this.hasExpired())  {// this will only run once - because next iteration it will be removed from the tree
+
+            // emit smoke puff!!
+            GLOBAL_GAME.backgroundObjects.addNode(new DisappearingSmokePuff(this.x, this.y));
+        }
     }
 
     updateLivePlayer(delta: number) {
@@ -101,6 +108,9 @@ export class Player extends Sprite {
             // slowly fade out the player
             g.globalAlpha = 1- Math.abs(this.ttl / Player.PLAYER_EXPIRE_TTL);
         }
-        g.fillRect(this.x, this.y, 10, 10);
+
+        g.translate(this.renderXPos(), this.renderYPos());
+
+        g.fillRect(0, 0, this.width, this.height);
     }
 }
