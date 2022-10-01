@@ -15,6 +15,7 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
+        "@parcel/transformer-less": "^2.7.0",
         "@types/node": "^18.7.23",
         "parcel": "^2.7.0",
         "sharp": "^0.29.3"

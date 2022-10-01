@@ -6,6 +6,7 @@ import { Level01 } from "./levels/01/level01";
 import { Level02 } from "./levels/02/level02";
 import { Level03 } from "./levels/03/level03";
 import { Level04 } from "./levels/04/level04";
+import { init as initDPad } from './d-pad';
 
 /**
  * Called on window first load
@@ -44,6 +45,8 @@ export async function moveToNextLevel() {
 let lastLoadedGame : Game;
 
 async function loadLevel(level: Level) {
+
+  initDPad();
   
   if(lastLoadedGame) {
     lastLoadedGame.shutdownGame();
