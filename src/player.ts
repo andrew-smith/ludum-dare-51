@@ -1,13 +1,13 @@
 import assert from "assert";
 import { Key } from "ts-keycode-enum";
-import { Explosion } from "./animations/Explosion";
-import { DisappearingSmokePuff } from "./animations/SmokePuff";
+import { Explosion } from "./sprites/Explosion";
 import { GLOBAL_GAME } from "./app";
 import { GameAudio, playAudio } from "./audio";
 import { Sprite } from "./classes";
 import { CANVAS_HEIGHT, CANVAS_WIDTH, SECONDS } from "./constants";
 import { GameImage } from "./images";
 import { isKeyPressed } from "./utils/keyevents";
+import { DeadPlayer } from "./sprites/DeadPlayer";
 
 
 
@@ -40,7 +40,7 @@ export class Player extends Sprite {
 
     hasExpired(): boolean {
 
-        return (this.ttl < 0);
+        return this.isDead;
     }
 
 
@@ -81,37 +81,13 @@ export class Player extends Sprite {
             GLOBAL_GAME.foregoundNode.addNode(new Explosion(this.x, this.y));
             playAudio(GameAudio!.miniExplosion);
 
+            // emit a dead player
+            GLOBAL_GAME.backgroundNode.addNode(new DeadPlayer(this.x, this.y));
+
+
             GLOBAL_GAME.playerHasDied();
 
         }
-
-
-        if(this.isDead) {
-            return this.updateDeadPlayer(delta);
-        }
-
-
-        // else we are alive, so update live player
-        this.updateLivePlayer(delta);
-
-
-    }
-
-    updateDeadPlayer(delta: number) {
-
-        // todo something?
-
-        if(this.hasExpired())  {// this will only run once - because next iteration it will be removed from the tree
-
-            // emit dead player body
-            // TODO
-
-            // emit smoke puff!!
-            GLOBAL_GAME.backgroundNode.addNode(new DisappearingSmokePuff(this.x, this.y));
-        }
-    }
-
-    updateLivePlayer(delta: number) {
 
         const previousX = this.x;
         const previousY = this.y;
@@ -167,23 +143,4 @@ export class Player extends Sprite {
         // g.fillRect(this.renderXPos(), this.renderYPos(), this.width, this.height);
     }
 
-
-    renderDeadPlayer(g: CanvasRenderingContext2D): void {
-
-        const img = GameImage!.man;
-    
-
-        if(this.isDead) {
-            // slowly fade out the player
-            g.globalAlpha = 1- Math.abs(this.ttl / Player.PLAYER_EXPIRE_TTL);
-        }
-
-        g.save();
-
-        g.translate(this.x, this.y);
-        g.drawImage(img, 0, 0);
-
-        g.restore();
-
-    }
 }
