@@ -4,6 +4,7 @@ import { Game } from "./game";
 import { loadImages } from "./images";
 import { Level01 } from "./levels/01/level01";
 import { Level02 } from "./levels/02/level02";
+import { Level03 } from "./levels/03/level03";
 
 /**
  * Called on window first load
@@ -20,7 +21,7 @@ async function startup() {
 let LEVEL_INDEX = -1;
 
 const LEVELS = [
-    Level01, Level02
+    Level01, Level02, Level03
 ]
 
 // called from game.ts when the next level should be loaded

@@ -3,50 +3,80 @@ import { Sprite, NodeType } from "../classes";
 import { Game } from "../game";
 
 
+export type ButtonOpts = {
+    /** True if there always needs to be a body on this button. False if a single touch will activate it forever */
+    needsHoldingDown?: boolean
+}
+
+
 export class Button extends Sprite {
 
 
     /** true if the button is currently being pressed */
-    private isActive = false;
+    private _isActive = false;
+
+    ops?: ButtonOpts;
 
     /** delta is added to this */
     timeElapsed = 0;
 
-    constructor(x: number, y: number) {
+    constructor(x: number, y: number, opts?: ButtonOpts) {
         super(x,y, {width:35, height:15});
 
         this.type = NodeType.BUTTON;
+
+        this.ops = opts;
     }
+
+    /**
+     * Is this button currently active?
+     */
+    isActive() {
+        return this._isActive;
+    }
+
+    /**
+     * Manually set this button to active
+     */
+    setActive() {
+        this._isActive = true;
+        playAudio(GameAudio!.buttonPress);
+    }
+
 
 
     update(delta: number, g: Game): void {
 
         this.timeElapsed += delta;
 
-        // reset is active and check again
-        const lastState = this.isActive;
-        this.isActive = false;
+
+
+        // reset is active and check again (only if the button needs to be held down.)
+        const lastState = this._isActive;
+        if(this.ops?.needsHoldingDown) {
+            this._isActive = false;
+        }
 
         // check if the player has pressed the button
         const p = g.player;
 
         if(this.isPointInSprite(p)) {
             console.log("Button Pressed By Player!")
-            this.isActive = true;
+            this._isActive = true;
         }
 
         // check all dead bodies to see if any of them are pressing the button
         g.backgroundNode.children.forEach((node) => {
             if(node.type === NodeType.DEAD_PLAYER) {
                 if(this.isPointInSprite(node as Sprite)) {
-                    this.isActive = true;
+                    this._isActive = true;
                 }
             }
         })
 
         // if the button was pressed - play a sound!
-        if(lastState === false && this.isActive === true) {
-            playAudio(GameAudio!.buttonPress);
+        if(lastState === false && this._isActive === true) {
+            this.setActive();
         }
 
     }
@@ -56,7 +86,7 @@ export class Button extends Sprite {
 
         g.fillStyle = 'grey';
 
-        if(this.isActive) {
+        if(this._isActive) {
             g.fillStyle = 'purple';
         }
 

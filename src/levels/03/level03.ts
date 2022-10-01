@@ -5,7 +5,7 @@ import { GameImage } from "../../images";
 import { Button } from "../../sprites/button";
 import { assert } from "../../utils/assert";
 
-export class Level02 extends Level {
+export class Level03 extends Level {
 
     width = 1000;
     height = 1000;
@@ -43,8 +43,8 @@ export class Level02 extends Level {
         // load background display image for user
         this.backgroundImage = GameImage!.level01_map;
         
-
-        this.button = new Button(700, 350);
+        // this button needs holding down
+        this.button = new Button(700, 350, {needsHoldingDown: true});
         game.backgroundNode.addNode(this.button);
 
         // hardcoded exit portal
@@ -56,8 +56,7 @@ export class Level02 extends Level {
 
     update(delta: number): void {
         
-        if(this.button.isActive()) {
-            this.exitPortal.isActive = true;
-        }
+        this.exitPortal.isActive = this.button.isActive();
+        
     }
 }
