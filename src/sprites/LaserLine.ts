@@ -88,7 +88,11 @@ export class LaserLine extends Sprite {
 
         }
 
+        // reset the laser length and recalculate (if bodies disappear then this will move the laser back again)
+        this.lineLength = Math.abs(Math.hypot(this.x2-this.x1, this.y2-this.y1));
+
         // check all dead bodies to see if any of them are in the way of the laser
+
         const allIntersectingPoints: Flatten.Point[] = [];
 
         g.backgroundNode.children.forEach((node) => {
