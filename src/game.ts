@@ -1,11 +1,12 @@
 import { Background } from "./background";
 import { GameNode } from "./classes";
 import { Player } from "./player";
+import { HUD } from "./ui-hud/hud";
 import { assert } from "./utils/assert";
 import { uuid } from "./utils/uuid";
 
-export const GAME_WIDTH = 512;
-export const GAME_HEIGHT = 640;
+export const CANVAS_WIDTH = 512;
+export const CANVAS_HEIGHT = 640;
 
 
 
@@ -25,6 +26,12 @@ export class Game {
 
     public livePlayerNode: GameNode; // should only have one in it at all times!
     public deadPlayerNodes: GameNode;
+    public player: Player;
+
+    public background: Background;
+    public backgroundObjects: GameNode;
+    public foregoundObjects: GameNode;
+    public uiNode: GameNode;
 
     constructor(opts: GameOpts) {
 
@@ -41,25 +48,41 @@ export class Game {
     async initilize() {
         console.log("initilize game " + this.id);
 
-        this.rootNode.addNode(new Background());
+        // THIS IS IN RENDERING ORDER
 
+        this.background = new Background();
+        this.rootNode.addNode(this.background);
+
+        // background objects (that the player can step on)
+        this.backgroundObjects = new GameNode();
+        this.rootNode.addNode(this.backgroundObjects);
 
         // dead player nodes
         this.deadPlayerNodes = new GameNode();
         this.rootNode.addNode(this.deadPlayerNodes);
 
 
-
         // live player node
         this.livePlayerNode = new GameNode();
         this.rootNode.addNode(this.livePlayerNode);
+
+        // foreground objects that are on top of the player
+        this.foregoundObjects = new GameNode();
+        this.rootNode.addNode(this.foregoundObjects);
+
+        // the UI components
+        this.uiNode = new GameNode();
+        this.rootNode.addNode(this.uiNode);
+
+        this.uiNode.addNode(new HUD());
         
         this.createNewPlayer();
     }
 
     // called on first load, and when a player dies and needs to respawn
     private createNewPlayer() {
-        this.livePlayerNode.addNode(new Player());
+        this.player = new Player();
+        this.livePlayerNode.addNode(this.player);
     }
 
 

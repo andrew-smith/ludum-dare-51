@@ -1,13 +1,13 @@
 import { Key } from "ts-keycode-enum";
 import { GLOBAL_GAME } from "./app";
 import { Sprite } from "./classes";
-import { GAME_HEIGHT, GAME_WIDTH } from "./game";
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./game";
 import { isKeyPressed } from "./utils/keyevents";
 
 const SECOND = 1000;
 
-// Player node is expired (removed) after 30 seconds
-const PLAYER_DEAD_TTL = -30 * SECOND;
+
+
 
 /**
  * A player - which can be a live player or a dead player.
@@ -16,23 +16,28 @@ const PLAYER_DEAD_TTL = -30 * SECOND;
  */
 export class Player extends Sprite {
 
+    
+    /** Player node is expired (removed) after 30 seconds */
+    static PLAYER_EXPIRE_TTL = -30 * SECOND; 
+
+    /** How much time the player starts with */
+    static PLAYER_STARTING_TTL = 3 * SECOND;
+
+
     /** When the player is going to die (10 seconds) */
-    ttl: number = 1 * SECOND;
+    ttl: number = Player.PLAYER_STARTING_TTL;
 
     isDead = false;
 
     constructor() {
         // starting x/y position
-        super(GAME_WIDTH/2, GAME_HEIGHT/2);
-
-        this.x = Math.random() * 250;
-        this.y = Math.random() * 250;
+        super(CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
     }
 
 
     hasExpired(): boolean {
 
-        return (this.ttl < PLAYER_DEAD_TTL);
+        return (this.ttl < Player.PLAYER_EXPIRE_TTL);
     }
 
 
@@ -91,7 +96,10 @@ export class Player extends Sprite {
         g.fillStyle = "red";
 
         if(this.isDead) {
-            g.fillStyle = 'grey'
+            g.fillStyle = 'grey';
+
+            // slowly fade out the player
+            g.globalAlpha = 1- Math.abs(this.ttl / Player.PLAYER_EXPIRE_TTL);
         }
         g.fillRect(this.x, this.y, 10, 10);
     }

@@ -1,5 +1,5 @@
 import { Sprite } from "./classes";
-import { GAME_HEIGHT, GAME_WIDTH } from "./game";
+import { CANVAS_WIDTH, CANVAS_HEIGHT } from "./game";
 
 
 
@@ -15,11 +15,6 @@ export class Background extends Sprite {
 
     update(delta: number): void {
         this.timer += delta;
-
-        if(this.timer > 1000) {
-            this.thing = !this.thing;
-            this.timer = 0;
-        }
     }
 
     render(g: CanvasRenderingContext2D): void {
@@ -28,6 +23,6 @@ export class Background extends Sprite {
         // if(this.thing) {
         //     g.fillStyle = 'green';
         // }
-        g.fillRect(this.x, this.y, GAME_WIDTH, GAME_HEIGHT);
+        g.fillRect(this.x, this.y, CANVAS_WIDTH, CANVAS_HEIGHT);
     }
 }
