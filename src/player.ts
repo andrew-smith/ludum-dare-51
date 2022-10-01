@@ -5,7 +5,7 @@ import { GameAudio, playAudio } from "./audio";
 import { Sprite } from "./classes";
 import { CANVAS_HEIGHT, CANVAS_WIDTH, SECONDS } from "./constants";
 import { GameImage } from "./images";
-import { isKeyPressed } from "./utils/keyevents";
+import { getDPadMovement, isKeyPressed, isUserTouchingDPad } from "./utils/keyevents";
 import { DeadPlayer } from "./sprites/DeadPlayer";
 import { Game } from "./game";
 
@@ -118,26 +118,36 @@ export class Player extends Sprite {
         const previousX = this.x;
         const previousY = this.y;
 
-        const movementSpeed = 0.35 * delta;
+        let movementSpeed = 0.35 * delta;
 
-        if(isKeyPressed(Key.UpArrow) || isKeyPressed(Key.W)) {
-            this.y -= movementSpeed;
-            this.hasPlayerMovedYet = true;
+        if(isUserTouchingDPad()) {
+            const playerMove = getDPadMovement();
+
+            this.x += playerMove.x * movementSpeed;
+            this.y += playerMove.y * movementSpeed;
+        }
+        else { // use arrow keys
+
+            if(isKeyPressed(Key.UpArrow) || isKeyPressed(Key.W)) {
+                this.y -= movementSpeed;
+                this.hasPlayerMovedYet = true;
+            }
+    
+            if(isKeyPressed(Key.DownArrow)  || isKeyPressed(Key.S)) {
+                this.y += movementSpeed;
+                this.hasPlayerMovedYet = true;
+            }
+    
+            if(isKeyPressed(Key.LeftArrow) || isKeyPressed(Key.A)) {
+                this.x -= movementSpeed;
+                this.hasPlayerMovedYet = true;
+            }
+            if(isKeyPressed(Key.RightArrow) || isKeyPressed(Key.D)) {
+                this.x += movementSpeed;
+                this.hasPlayerMovedYet = true;
+            }
         }
 
-        if(isKeyPressed(Key.DownArrow)  || isKeyPressed(Key.S)) {
-            this.y += movementSpeed;
-            this.hasPlayerMovedYet = true;
-        }
-
-        if(isKeyPressed(Key.LeftArrow) || isKeyPressed(Key.A)) {
-            this.x -= movementSpeed;
-            this.hasPlayerMovedYet = true;
-        }
-        if(isKeyPressed(Key.RightArrow) || isKeyPressed(Key.D)) {
-            this.x += movementSpeed;
-            this.hasPlayerMovedYet = true;
-        }
 
         // if it's a bad space to move to, go back to previous position
         if(! g.isClearSpace(this.x, this.y)) {

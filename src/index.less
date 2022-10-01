@@ -1,3 +1,9 @@
+
+// disable double tapping zoom
+body {
+    touch-action: manipulation;
+}
+
 #touch_controls {
     text-align: center;
 }
@@ -32,4 +38,17 @@
 
 #touch_controls > div:nth-child(5) {
     background-image: data-uri('icons/flame.svg');
+}
+
+
+#touch_controls_v2 {
+
+    padding: 0;
+    margin: auto;
+    display: block;
+    width: 200px;
+    height: 200px;
+    background-color: black;
+
+    border:5px solid #616161;
 }
