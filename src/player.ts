@@ -5,12 +5,9 @@ import { DisappearingSmokePuff } from "./animations/SmokePuff";
 import { GLOBAL_GAME } from "./app";
 import { GameAudio, playAudio } from "./audio";
 import { Sprite } from "./classes";
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants";
+import { CANVAS_HEIGHT, CANVAS_WIDTH, SECONDS } from "./constants";
 import { GameImage } from "./images";
 import { isKeyPressed } from "./utils/keyevents";
-
-const SECOND = 1000;
-
 
 
 
@@ -21,13 +18,10 @@ const SECOND = 1000;
  */
 export class Player extends Sprite {
 
-    
-    /** Player node is expired (removed) after 30 seconds */
-    static PLAYER_EXPIRE_TTL = -3 * SECOND; 
+    static PLAYER_EXPIRE_TTL = 10 * SECONDS;
 
     /** How much time the player starts with */
-    static PLAYER_STARTING_TTL = 3 * SECOND;
-
+    static PLAYER_STARTING_TTL = 3 * SECONDS;
 
     /** When the player is going to die (10 seconds) */
     ttl: number = Player.PLAYER_STARTING_TTL;
@@ -40,13 +34,13 @@ export class Player extends Sprite {
 
     constructor() {
         // starting x/y position
-        super(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, {width: GameImage!.man.width, height: GameImage!.man.height});
+        super(0, 0, {width: GameImage!.man.width, height: GameImage!.man.height});
     }
 
 
     hasExpired(): boolean {
 
-        return (this.ttl < Player.PLAYER_EXPIRE_TTL);
+        return (this.ttl < 0);
     }
 
 
@@ -88,6 +82,9 @@ export class Player extends Sprite {
 
         if(this.hasExpired())  {// this will only run once - because next iteration it will be removed from the tree
 
+            // emit dead player body
+            // TODO
+
             // emit smoke puff!!
             GLOBAL_GAME.backgroundObjects.addNode(new DisappearingSmokePuff(this.x, this.y));
         }
@@ -115,24 +112,48 @@ export class Player extends Sprite {
             this.x += movementSpeed;
             this.hasPlayerMovedYet = true;
         }
+
     }
 
     render(g: CanvasRenderingContext2D): void {
 
+        if(this.isDead) {
+            return this.renderDeadPlayer(g);
+        }
+
+        this.renderAlivePlayer(g);
+    }
+
+
+    renderAlivePlayer(g: CanvasRenderingContext2D): void {
+
         const img = GameImage!.man;
-        
-        
-        g.fillStyle = "red";
+
+        // player is ALWAYS in center of the screen
+        g.save();
+            g.translate(CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
+            g.drawImage(img, -this.width/2, -this.height/2);
+        g.restore();
+        // g.fillRect(this.renderXPos(), this.renderYPos(), this.width, this.height);
+    }
+
+
+    renderDeadPlayer(g: CanvasRenderingContext2D): void {
+
+        const img = GameImage!.man;
+    
 
         if(this.isDead) {
-            g.fillStyle = 'grey';
-
             // slowly fade out the player
             g.globalAlpha = 1- Math.abs(this.ttl / Player.PLAYER_EXPIRE_TTL);
         }
 
-        g.drawImage(img, this.renderXPos(), this.renderYPos());
+        g.save();
 
-        // g.fillRect(this.renderXPos(), this.renderYPos(), this.width, this.height);
+        g.translate(this.x, this.y);
+        g.drawImage(img, 0, 0);
+
+        g.restore();
+
     }
 }

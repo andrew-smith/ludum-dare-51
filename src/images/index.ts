@@ -4,6 +4,12 @@ const IMAGES = {
     'dog': new URL('dog.png?width=100&height=100', import.meta.url),
     'man': new URL('man.png?width=50&height=50', import.meta.url),
     'explosion': new URL('explosion.png?width=252&height=42', import.meta.url),
+
+
+
+    'level01_bounds': new URL('levels/01/bounds.png?width=1000&height=1000', import.meta.url),
+    'level01_map': new URL('levels/01/map.png?width=1000&height=1000', import.meta.url),
+
 } as const;
 type Images = { [name in keyof typeof IMAGES]: ImageBitmap };
 

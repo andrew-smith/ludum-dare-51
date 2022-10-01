@@ -54,16 +54,17 @@ export class Game {
 
         // THIS IS IN RENDERING ORDER
 
+        // background is the root node for almost everything so they can be moved around
         this.background = new Background();
         this.rootNode.addNode(this.background);
 
         // background objects (that the player can step on)
         this.backgroundObjects = new GameNode();
-        this.rootNode.addNode(this.backgroundObjects);
+        this.background.addNode(this.backgroundObjects);
 
         // dead player nodes
         this.deadPlayerNodes = new GameNode();
-        this.rootNode.addNode(this.deadPlayerNodes);
+        this.background.addNode(this.deadPlayerNodes);
 
 
         // live player node
@@ -72,7 +73,7 @@ export class Game {
 
         // foreground objects that are on top of the player
         this.foregoundObjects = new GameNode();
-        this.rootNode.addNode(this.foregoundObjects);
+        this.background.addNode(this.foregoundObjects);
 
         // the UI components
         this.uiNode = new GameNode();

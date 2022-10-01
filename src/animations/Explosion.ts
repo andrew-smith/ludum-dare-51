@@ -23,6 +23,8 @@ export class Explosion extends Sprite {
     constructor(x: number, y: number) {
         super(x, y);
 
+        console.log(this.x, this.y);
+
         this.ttl = Explosion.TOTAL_FRAMES * Explosion.FRAME_TIME_LENGTH;
     }
 
