@@ -7,7 +7,9 @@ const { Polygon, Point, Line } = Flatten;
 
 export class DeadPlayer extends Sprite {
 
-    ttl: number = 7 * SECONDS;
+    static STARTING_TTL = 7 * SECONDS;
+
+    ttl = DeadPlayer.STARTING_TTL;
 
     constructor(x: number, y: number) {
         super(x,y, {width: GameImage!.man.width, height: GameImage!.man.height});
@@ -43,13 +45,16 @@ export class DeadPlayer extends Sprite {
 
         const img = GameImage!.man;
 
+        // set alpha level based on how much TTL
+        const percent = this.ttl / DeadPlayer.STARTING_TTL;
+
 
         g.save();
 
         g.translate(this.x, this.y);
 
         g.rotate(90 * (Math.PI/180));
-        g.globalAlpha = 0.5;
+        g.globalAlpha = 0.5 * percent;
         g.drawImage(img, -this.width/2, -this.height/2);
 
         g.restore();
