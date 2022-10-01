@@ -7,12 +7,17 @@ export class ExitPortal extends Sprite {
     /** true if the portal allows exiting */
     isActive = false;
 
+    /** delta is added to this */
+    timeElapsed = 0;
+
     constructor(x: number, y: number) {
         super(x,y, {width:35, height:45});
 
     }
 
     update(delta: number): void {
+
+        this.timeElapsed += delta;
 
         // don't do anything if it's not active
         if(!this.isActive) {
@@ -39,6 +44,9 @@ export class ExitPortal extends Sprite {
         }
 
         g.translate(this.x, this.y);
+
+        g.rotate(this.timeElapsed / 300);
+        g.scale(Math.sin(this.timeElapsed / 300), 1);
 
         g.fillRect(-this.width/2, -this.height/2, this.width, this.height);
 
