@@ -7,7 +7,8 @@ const KEYS_TO_PREVENT_DEFAULT = [
     Key.UpArrow,
     Key.DownArrow,
     Key.LeftArrow,
-    Key.RightArrow
+    Key.RightArrow,
+    Key.Space
 ]
 
 
@@ -21,8 +22,7 @@ window.addEventListener('keyup', (e) => {
 
 
 window.addEventListener('keydown', (e) => {
-    KEY_STATES[e.keyCode] = true;
-    
+    KEY_STATES[e.keyCode] = true;    
     if(KEYS_TO_PREVENT_DEFAULT.includes(e.keyCode)) {
         e.preventDefault();
     }

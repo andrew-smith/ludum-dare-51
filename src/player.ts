@@ -119,6 +119,12 @@ export class Player extends Sprite {
             this.y = previousY;
         }
 
+
+        // if space is pressed - die instantly
+        if(isKeyPressed(Key.Space)) {
+            this.ttl = -1;
+        }
+
     }
 
     render(g: CanvasRenderingContext2D): void {
