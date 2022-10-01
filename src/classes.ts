@@ -10,7 +10,8 @@ export enum NodeType {
 
     BUTTON,
     EXIT_PORTAL,
-    DEAD_PLAYER
+    DEAD_PLAYER,
+    LASER_LINE,
 }
 
 
