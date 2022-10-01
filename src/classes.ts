@@ -1,3 +1,4 @@
+import { Game } from "./game";
 import { uuid } from "./utils/uuid";
 
 
@@ -43,7 +44,9 @@ export abstract class Level {
     /** height of the level */
     height: number;
 
-    abstract initilize(): Promise<void>;
+    abstract initilize(game: Game): Promise<void>;
+
+    abstract update(delta: number): void;
 
     isClearSpace(x: number, y: number) : boolean {
 

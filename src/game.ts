@@ -1,15 +1,10 @@
-import { loadAudio } from "./audio";
 import { Background } from "./background";
 import { GameNode, Level } from "./classes";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants";
-import { loadImages } from "./images";
 import { Player } from "./player";
 import { HUD } from "./ui-hud/hud";
 import { assert } from "./utils/assert";
 import { uuid } from "./utils/uuid";
-import { GameImage } from "./images";
-import { ExitPortal } from "./exit-portal";
-import { Button } from "./sprites/button";
 
 
 
@@ -59,10 +54,6 @@ export class Game {
     async initilize() {
         console.log("initilize game " + this.id);
 
-        const loadPromises = Promise.all([
-            this.level.initilize()
-        ]);
-
         // THIS IS IN RENDERING ORDER
 
         // first render all background objects
@@ -80,26 +71,12 @@ export class Game {
         // FINISH RENDERING ORDER SETUP
 
         // wait for all async
-        await loadPromises;
+        await this.level.initilize(this);
         console.log("All resources loaded");
 
-
-
-        // hardcoded exit portal
-        this.testExitPortal = new ExitPortal(855, 450);
-        // exitPortal.isActive = true;
-        this.backgroundNode.addNode(this.testExitPortal);
-
-        // hardcoded button
-        const button = new Button(700, 350);
-        this.backgroundNode.addNode(button);
-
-        
         this.createNewPlayer();
     }
 
-
-    testExitPortal: ExitPortal;
 
     // called on first load, and when a player dies and needs to respawn
     private createNewPlayer() {
@@ -154,6 +131,7 @@ export class Game {
 
 
         this.update(delta);
+        this.level.update(delta);
         this.render(this.graphics);
 
         this.lastUpdate = now;
@@ -173,38 +151,35 @@ export class Game {
     render(g: CanvasRenderingContext2D) {
 
         g.save();
-        g.imageSmoothingEnabled = false;
+            g.imageSmoothingEnabled = false;
+
+            g.save();
+
+                // move to the center of the canvas before rendering anything
+                g.translate(CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
+                g.translate(-this.player.x, -this.player.y);
+
+                this.backgroundNode.renderAll(g);
+
+            g.restore();
 
 
+            g.save();
+                g.translate(CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
+                this.playerNode.renderAll(g);
+            g.restore();
 
 
-        g.save();
-
-            // move to the center of the canvas before rendering anything
-            g.translate(CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
-            g.translate(-this.player.x, -this.player.y);
-
-            this.backgroundNode.renderAll(g);
-
-        g.restore();
+            g.save();
+                g.translate(CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
+                g.translate(-this.player.x, -this.player.y);
+                this.foregoundNode.renderAll(g);
+            g.restore();
 
 
-        g.save();
-            g.translate(CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
-            this.playerNode.renderAll(g);
-        g.restore();
-
-
-        g.save();
-            g.translate(CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
-            g.translate(-this.player.x, -this.player.y);
-            this.foregoundNode.renderAll(g);
-        g.restore();
-
-
-        g.save()
-            this.uiNode.renderAll(g);
-        g.restore();
+            g.save()
+                this.uiNode.renderAll(g);
+            g.restore();
 
         g.restore();
     }

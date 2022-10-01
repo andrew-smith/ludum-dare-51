@@ -41,8 +41,6 @@ export class Button extends Sprite {
             }
         })
 
-
-        GLOBAL_GAME.testExitPortal.isActive = this.isActive;
     }
 
     render(g: CanvasRenderingContext2D): void {
