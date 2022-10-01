@@ -125,6 +125,8 @@ export class Player extends Sprite {
 
             this.x += playerMove.x * movementSpeed;
             this.y += playerMove.y * movementSpeed;
+            this.hasPlayerMovedYet = true;
+
         }
         else { // use arrow keys
 
