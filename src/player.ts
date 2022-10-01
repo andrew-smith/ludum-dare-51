@@ -44,7 +44,28 @@ export class Player extends Sprite {
     }
 
 
+    hasCelebrated = false;
+
+    // called when level is finished
+    celebrateFinishingLevel() {
+        if(this.hasCelebrated) {
+            return;
+        }
+
+        this.hasCelebrated = true;
+
+        GLOBAL_GAME.foregoundNode.addNode(new Explosion(this.x, this.y));
+    }
+
+
+
     update(delta: number): void {
+
+        if(GLOBAL_GAME.isLevelCompleted) {
+
+            this.celebrateFinishingLevel();
+            return;
+        }
 
         if(this.hasPlayerMovedYet) {
             this.ttl -= delta;

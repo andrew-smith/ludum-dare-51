@@ -8,11 +8,12 @@ import { HUD } from "./ui-hud/hud";
 import { assert } from "./utils/assert";
 import { uuid } from "./utils/uuid";
 import { GameImage } from "./images";
+import { ExitPortal } from "./exit-portal";
 
 
 
 export type GameOpts = {
-    mainCanvasElementId: string
+    mainCanvasElementId: string,
 }
 
 
@@ -34,7 +35,12 @@ export class Game {
 
     public player: Player;
 
-    private boundsImageData;
+    /** Stores black/white image data so we can look up if there is a collision for the player */
+    private boundsImageData: ImageData;
+
+
+    /** True once the level is completed */
+    isLevelCompleted = false;
 
 
     constructor(opts: GameOpts) {
@@ -86,8 +92,12 @@ export class Game {
         boundsContext.resetTransform(); // clear everything
         boundsContext.drawImage(GameImage!.level01_bounds, 0,0);
         this.boundsImageData = boundsContext.getImageData(0, 0, 1000, 1000);
-        console.log(this.boundsImageData);
 
+
+        // hardcoded exit portal
+        const exitPortal = new ExitPortal(855, 450);
+        exitPortal.isActive = true;
+        this.backgroundNode.addNode(exitPortal);
         
         this.createNewPlayer();
     }
@@ -110,7 +120,7 @@ export class Game {
 
         const index = y * (1000 * 4) + x * 4;
 
-        if(index < 0 || index >= this.boundsImageData.length) {
+        if(index < 0 || index >= this.boundsImageData.data.length) {
             return false;
         }
 
@@ -128,6 +138,10 @@ export class Game {
         setTimeout(() => {
             this.createNewPlayer();
         }, 500) 
+    }
+
+    playerWonLevel() {
+        this.isLevelCompleted = true;
     }
 
 

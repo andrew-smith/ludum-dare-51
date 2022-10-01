@@ -104,6 +104,7 @@ export class Sprite extends GameNode {
         return this.y - this.height/2; 
     }
 
+    
     update(delta: number) {};
     render(g: CanvasRenderingContext2D) {};
 }
