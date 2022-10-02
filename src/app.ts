@@ -25,7 +25,7 @@ async function startup() {
 let LEVEL_INDEX = -1;
 
 const LEVELS = [
-  SpashScreen, Level01, Level02, Level03, Level04, Level05
+  SpashScreen, Level01, Level03, Level04, Level05
 ]
 
 // const LEVELS = [
