@@ -11,3 +11,6 @@
   - cut
   - etc
 
+Oct 2nd TODOs:
+- Render something in the dpad to make it obvious the user can use it as a d-pad
+- More level designs. Introduce players to new concepts. New maps / challenges.

@@ -10,6 +10,9 @@ type Images = { [name in keyof typeof IMAGES]: ImageBitmap };
 const LAZY_IMAGES = {
     'level01_bounds': new URL('levels/01/bounds.png?width=1000&height=1000', import.meta.url),
     'level01_map': new URL('levels/01/map.png?width=1000&height=1000', import.meta.url),
+
+    'level02_bounds': new URL('levels/02/bounds.png?width=1024&height=1024', import.meta.url),
+    'level02_map': new URL('levels/02/map.png?width=1024&height=1024', import.meta.url),
 } as const;
 type LazyImages = { [name in keyof typeof LAZY_IMAGES]: () => Promise<ImageBitmap> };
 

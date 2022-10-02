@@ -40,9 +40,9 @@ export class Player extends Sprite {
     /** The last position of the player */
     previousY: number;
 
-    constructor() {
+    constructor(x:number, y:number) {
         // starting x/y position
-        super(500, 500, {width: GameImage!.man.width, height: GameImage!.man.height});
+        super(x, y, {width: GameImage!.man.width, height: GameImage!.man.height});
 
         this.previousX = this.x;
         this.previousY = this.y;

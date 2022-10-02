@@ -7,10 +7,12 @@ import { assert } from "../../utils/assert";
 
 export class Level02 extends Level {
 
-    width = 1000;
-    height = 1000;
+    width = 1024;
+    height = 1024;
 
     game: Game;
+
+    startingPlayerPosition = {x: 100, y:100};
 
     constructor() {
         super();
@@ -34,14 +36,13 @@ export class Level02 extends Level {
         assert(boundsContext, 'Canvas has no context (?)');
 
         boundsContext.resetTransform(); // clear everything
-        boundsContext.drawImage(await LazyGameImage.level01_bounds(), 0,0);
+        boundsContext.drawImage(await LazyGameImage.level02_bounds(), 0,0);
         this.boundsImageData = boundsContext.getImageData(0, 0, 1000, 1000);
 
         // load background display image for user
-        this.backgroundImage = await LazyGameImage.level01_map();
+        this.backgroundImage = await LazyGameImage.level02_map();
         
-
-        this.button = new Button(700, 350);
+        this.button = new Button(120, 120);
         game.backgroundNode.addNode(this.button);
 
         // hardcoded exit portal

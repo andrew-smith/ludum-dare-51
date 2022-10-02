@@ -29,7 +29,7 @@ const LEVELS = [
 ]
 
 // const LEVELS = [
-//     Level05
+//     Level02
 // ]
 
 // called from game.ts when the next level should be loaded

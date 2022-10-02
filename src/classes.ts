@@ -45,6 +45,8 @@ export abstract class Level {
     /** height of the level */
     height: number;
 
+    startingPlayerPosition?: {x: number, y: number};
+
     abstract initilize(game: Game): Promise<void>;
 
     abstract update(delta: number, game: Game): void;

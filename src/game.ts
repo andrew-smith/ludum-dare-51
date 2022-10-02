@@ -65,7 +65,7 @@ export class Game {
         // THIS IS IN RENDERING ORDER
 
         // first render all background objects
-        this.backgroundNode = new Background(this.level);
+        this.backgroundNode = new GameNode(); //new Background(this.level);
 
         // then render the player
         this.playerNode = new GameNode();
@@ -78,11 +78,16 @@ export class Game {
 
         // FINISH RENDERING ORDER SETUP
 
+        this.createNewPlayer();
+
+        this.backgroundNode.addNode(new Background(this.level));
+
         // wait for all async
         await this.level.initilize(this);
         console.log("All resources loaded");
 
-        this.createNewPlayer();
+
+
     }
 
     /**
@@ -95,7 +100,16 @@ export class Game {
 
     // called on first load, and when a player dies and needs to respawn
     private createNewPlayer() {
-        this.player = new Player();
+
+        let startX = 500;
+        let startY = 500;
+
+        if(this.level.startingPlayerPosition) {
+            startX = this.level.startingPlayerPosition.x;
+            startY = this.level.startingPlayerPosition.y;
+        }
+
+        this.player = new Player(startX, startY);
         this.playerNode.addNode(this.player);
     }
 
