@@ -28,7 +28,7 @@ export class Game {
     public backgroundNode: GameNode;
     private playerNode: GameNode;
     public foregoundNode: GameNode;
-    private uiNode: GameNode;
+    public uiNode: GameNode;
 
 
     public player: Player;
@@ -43,6 +43,9 @@ export class Game {
 
 
     level: Level;
+
+    customLevelSuccessMessage?: string;
+    customLevelSuccessMessageOffset?: number
 
     constructor(level: Level, opts?: GameOpts) {
 
@@ -215,7 +218,11 @@ export class Game {
             g.save();
 
                 const FONTSIZE = 40;
-                const MSG = "LEVEL COMPLETE!";
+                let MSG = "LEVEL COMPLETE!";
+
+                if(this.customLevelSuccessMessage) {
+                    MSG = this.customLevelSuccessMessage;
+                }
 
                 g.fillStyle = "white";
                 g.font = `bold ${FONTSIZE}px Courier New`;

@@ -8,6 +8,7 @@ import { Level03 } from "./levels/03/level03";
 import { Level04 } from "./levels/04/level04";
 import { init as initDPad } from './d-pad';
 import { Level05 } from "./levels/05/level05";
+import { SpashScreen } from "./levels/00-splashscreen/spash";
 
 /**
  * Called on window first load
@@ -24,7 +25,7 @@ async function startup() {
 let LEVEL_INDEX = -1;
 
 const LEVELS = [
-    Level01, Level02, Level03, Level04, Level05
+  SpashScreen, Level01, Level02, Level03, Level04, Level05
 ]
 
 // const LEVELS = [
